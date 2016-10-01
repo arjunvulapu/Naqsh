@@ -1,0 +1,6 @@
+framework module KIImagePager {
+  umbrella header "KIImagePager-umbrella.h"
+
+  export *
+  module * { export * }
+}

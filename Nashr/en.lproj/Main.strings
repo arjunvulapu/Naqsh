@@ -1,0 +1,126 @@
+
+/* Class = "UITabBarItem"; title = "Settings"; ObjectID = "0W5-YQ-GYc"; */
+"0W5-YQ-GYc.title" = "Settings";
+
+/* Class = "UITextField"; placeholder = "name"; ObjectID = "1Ux-Ik-Uod"; */
+"1Ux-Ik-Uod.placeholder" = "name";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "1ZG-kq-vvn"; */
+"1ZG-kq-vvn.normalTitle" = "Button";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "2zm-SK-211"; */
+"2zm-SK-211.normalTitle" = "Button";
+
+/* Class = "UITextField"; placeholder = "name"; ObjectID = "B52-ea-gD7"; */
+"B52-ea-gD7.placeholder" = "name";
+
+/* Class = "UITextField"; placeholder = "email"; ObjectID = "B8K-Kn-E6X"; */
+"B8K-Kn-E6X.placeholder" = "email";
+
+/* Class = "UIButton"; normalTitle = "Send"; ObjectID = "CNb-Ti-Qaz"; */
+"CNb-Ti-Qaz.normalTitle" = "Send";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "D0K-Vl-skl"; */
+"D0K-Vl-skl.normalTitle" = "Button";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "DVG-3j-Mpu"; */
+"DVG-3j-Mpu.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "Change Font"; ObjectID = "Ee3-I9-r6D"; */
+"Ee3-I9-r6D.text" = "Change Font";
+
+/* Class = "UIButton"; normalTitle = "Check Again"; ObjectID = "Et2-XL-rUR"; */
+"Et2-XL-rUR.normalTitle" = "Check Again";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "Fcb-QV-cIB"; */
+"Fcb-QV-cIB.normalTitle" = "Button";
+
+/* Class = "UITextField"; placeholder = "email"; ObjectID = "GFp-CS-SX3"; */
+"GFp-CS-SX3.placeholder" = "email";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "JLV-HD-nNF"; */
+"JLV-HD-nNF.normalTitle" = "Button";
+
+/* Class = "UITextField"; placeholder = "name"; ObjectID = "L2E-lp-sHZ"; */
+"L2E-lp-sHZ.placeholder" = "name";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "Ljn-37-ctw"; */
+"Ljn-37-ctw.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "It seems like internet is not working. Please check network settings."; ObjectID = "MpH-Ev-5Fu"; */
+"MpH-Ev-5Fu.text" = "It seems like internet is not working. Please check network settings.";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "NOe-cn-Sc5"; */
+"NOe-cn-Sc5.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "Font Style"; ObjectID = "OTn-MA-DIy"; */
+"OTn-MA-DIy.text" = "Font Style";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "P33-hj-gN4"; */
+"P33-hj-gN4.normalTitle" = "Button";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "Sfl-ZJ-P9z"; */
+"Sfl-ZJ-P9z.normalTitle" = "Button";
+
+/* Class = "UITextField"; placeholder = "email"; ObjectID = "Tmp-uq-e6x"; */
+"Tmp-uq-e6x.placeholder" = "email";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "UoT-WM-D9x"; */
+"UoT-WM-D9x.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "A"; ObjectID = "XYw-L9-hK2"; */
+"XYw-L9-hK2.text" = "A";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "dUF-VK-7IJ"; */
+"dUF-VK-7IJ.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "etg-KK-bWG"; */
+"etg-KK-bWG.normalTitle" = "Button";
+
+/* Class = "UITextField"; placeholder = "name"; ObjectID = "fpn-cl-gav"; */
+"fpn-cl-gav.placeholder" = "name";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "g4t-4U-fQo"; */
+"g4t-4U-fQo.text" = "Label";
+
+/* Class = "UITextField"; placeholder = "email"; ObjectID = "k6b-rL-Qjt"; */
+"k6b-rL-Qjt.placeholder" = "email";
+
+/* Class = "UIButton"; normalTitle = "Send"; ObjectID = "m9C-gh-FRe"; */
+"m9C-gh-FRe.normalTitle" = "Send";
+
+/* Class = "UISegmentedControl"; nH9-Lg-2Fm.segmentTitles[0] = "Normal"; ObjectID = "nH9-Lg-2Fm"; */
+"nH9-Lg-2Fm.segmentTitles[0]" = "Normal";
+
+/* Class = "UISegmentedControl"; nH9-Lg-2Fm.segmentTitles[1] = "Bold"; ObjectID = "nH9-Lg-2Fm"; */
+"nH9-Lg-2Fm.segmentTitles[1]" = "Bold";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "ns3-V5-tlF"; */
+"ns3-V5-tlF.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "You are Offline"; ObjectID = "odh-RZ-NHq"; */
+"odh-RZ-NHq.text" = "You are Offline";
+
+/* Class = "UIButton"; normalTitle = "Send"; ObjectID = "oeU-Cr-zYB"; */
+"oeU-Cr-zYB.normalTitle" = "Send";
+
+/* Class = "UITabBarItem"; title = "Sports"; ObjectID = "rdA-Dk-HAZ"; */
+"rdA-Dk-HAZ.title" = "Sports";
+
+/* Class = "UITabBarItem"; title = "Economy"; ObjectID = "rig-hL-9hy"; */
+"rig-hL-9hy.title" = "Economy";
+
+/* Class = "UITabBarItem"; title = "News"; ObjectID = "smL-oI-GYZ"; */
+"smL-oI-GYZ.title" = "News";
+
+/* Class = "UITabBarItem"; title = "TV Live"; ObjectID = "ues-fn-Hlf"; */
+"ues-fn-Hlf.title" = "TV Live";
+
+/* Class = "UIButton"; normalTitle = "Send"; ObjectID = "wbL-5F-53U"; */
+"wbL-5F-53U.normalTitle" = "Send";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "ypN-BR-tzW"; */
+"ypN-BR-tzW.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "A"; ObjectID = "yql-ek-XaM"; */
+"yql-ek-XaM.text" = "A";

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="49" id="KGk-i7-Jjw" customClass="CategoryTableViewCell" customModule="Nashr" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="48.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i26-w1-tAv">
+                        <rect key="frame" x="13" y="14" width="243" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="7bb-9w-n27"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                        <color key="textColor" red="0.20000000300000001" green="0.20000000300000001" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ajb-hH-Y4w">
+                        <rect key="frame" x="264" y="5" width="40" height="40"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="40" id="W48-v4-JMa"/>
+                            <constraint firstAttribute="width" constant="40" id="bAl-0a-m4g"/>
+                        </constraints>
+                    </imageView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="i26-w1-tAv" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="5" id="ADj-El-wde"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="Ajb-hH-Y4w" secondAttribute="trailing" constant="8" id="cxO-jt-OB1"/>
+                    <constraint firstItem="Ajb-hH-Y4w" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="g19-Ks-1KJ"/>
+                    <constraint firstItem="i26-w1-tAv" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="t3h-Sc-3Ic"/>
+                    <constraint firstItem="Ajb-hH-Y4w" firstAttribute="leading" secondItem="i26-w1-tAv" secondAttribute="trailing" constant="8" id="vLg-lc-Zm1"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="imageViewCategory" destination="Ajb-hH-Y4w" id="xFq-zi-tde"/>
+                <outlet property="labelTitle" destination="i26-w1-tAv" id="fdg-vi-IT6"/>
+            </connections>
+            <point key="canvasLocation" x="416" y="581.5"/>
+        </tableViewCell>
+    </objects>
+</document>

@@ -1,0 +1,29 @@
+{
+    "en": {
+        "title_select_sources":"Select Sources",
+        "title_channels":"Channels",
+        "title_news":"News",
+        "title_economy":"Economy",
+        "title_sports":"Sports",
+        "title_tv_live":"TV Live",
+        "title_settings":"Settings",
+        
+        "warning":"Warning",
+        "ok":"OK",
+        "cancel":"Cancel",
+        "yes":"Yes",
+        "no":"No",
+        "api_error":"Error while making server call",
+        "channel_add":"Add",
+        
+        "follow":"Follow",
+        "unfollow":"Unfollow",
+        
+        "no_feeds":"There are no feeds at this moment",
+        
+        "error_no_channels_subscribed":"There are no channels subscribed in this category",
+        
+        "empty_no_channels_in_category":"There are no channels in this category",
+        "message_channel_unfollow":"Are you sure you want to unfollow this channel?"
+    }
+}

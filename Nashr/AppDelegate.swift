@@ -8,33 +8,135 @@
 
 import UIKit
 import CoreData
+import IQKeyboardManager
+import SVProgressHUD
+import Alamofire
+import MediaPlayer
+import FBSDKCoreKit
+
+class MyTabBar : UITabBar {
+    override func sizeThatFits(size: CGSize) -> CGSize {
+        var sizeThatFits = super.sizeThatFits(size)
+        sizeThatFits.height = 60
+        return sizeThatFits
+    }
+}
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    var dictionary:NSDictionary?
 
+    func reloadUI() {
+        self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("tabbarcontroller")
+//        UIView.appearance().semanticContentAttribute = .ForceRightToLeft
+        //UIView.appearanceWhenContainedInInstancesOfClasses([UITableViewCell.self]).semanticContentAttribute = .Unspecified
+        
+        UITabBar.appearance().tintColor = UIColor.whiteColor()
+        UIButton.appearance().semanticContentAttribute = .ForceRightToLeft
+        UILabel.appearance().semanticContentAttribute = .ForceRightToLeft
+        UITableView.appearance().semanticContentAttribute = .ForceRightToLeft
+        UITableViewCell.appearance().semanticContentAttribute = .ForceRightToLeft
+        reloadTabs()
+    }
+    
+    func downloadTranslation() {
+        print ("path: \(Localization.path)")
+        let data:NSData? = NSURLSession.requestSynchronousData(NSURLRequest(URL: NSURL(string: Api.getUrl(Page.words))!))
+        try! data!.writeToFile(Localization.path, options: NSDataWritingOptions.AtomicWrite)
+        Settings.wordsDownloaded = true
+    }
+    
+    func downloadSettings() {
+        let data:NSData? = NSURLSession.requestSynchronousData(NSURLRequest(URL: NSURL(string: Api.getUrl(Page.settings))!))
+        self.dictionary = try! NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers) as! NSDictionary
+        
+        /*
+        SVProgressHUD.showAnimatedImages()
+        Alamofire
+            .request(.POST, Api.getUrl(Page.settings), parameters: [:])
+            .responseJSON(completionHandler: { (response) in
+                SVProgressHUD.dismiss()
+                switch response.result {
+                case .Success(let JSON):
+                    self.dictionary = JSON as? NSDictionary
+                    
+                case .Failure(let error):
+                    print("error: \(error)")
+                }
+            })*/
+    }
+    
+    func reloadTabs() {
+        let tabbar:UITabBarController = self.window?.rootViewController as! UITabBarController
+        tabbar.selectedIndex = 0
 
+        tabbar.tabBar.items![4].title = Localization.get("tab_settings")
+        tabbar.tabBar.items![3].title = Localization.get("tab_tv_live")
+        tabbar.tabBar.items![2].title = Localization.get("tab_sports")
+        tabbar.tabBar.items![1].title = Localization.get("tab_economy")
+        tabbar.tabBar.items![0].title = Localization.get("tab_news")
+        
+        UITabBarItem.appearance().setTitleTextAttributes(
+            [NSFontAttributeName: UIFont(name:"HelveticaNeueLTArabic-Bold", size:13)!,
+                NSForegroundColorAttributeName: UIColor.grayColor()],
+            forState: .Normal)
+    }
+    
+    func application(application: UIApplication, supportedInterfaceOrientationsForWindow window: UIWindow?) -> UIInterfaceOrientationMask {
+        if let presentedViewController = self.window!.rootViewController?.presentedViewController {
+            if (presentedViewController.isKindOfClass(MPMoviePlayerViewController.self) && !presentedViewController.isBeingDismissed()) {
+                return .AllButUpsideDown
+            }
+        }
+        return .Portrait
+    }
+    
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
+        FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
+        
+        //UIView.appearance().semanticContentAttribute = .ForceRightToLeft
+        IQKeyboardManager.sharedManager().enable = true
+        if Utils.isInternetAvailable() {
+            downloadTranslation()
+            downloadSettings()
+            reloadTabs()
+        } else {
+            self.window?.rootViewController = Utils.getViewController("InternetStatusViewController")
+        }
+        return true
+    }
+    
+    func application(app: UIApplication, openURL url: NSURL, options: [String : AnyObject]) -> Bool {
         return true
     }
 
+    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
+        let result = FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
+        return result
+    }
+    
     func applicationWillResignActive(application: UIApplication) {
+        print("applicationWillResignActive")
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
     }
 
     func applicationDidEnterBackground(application: UIApplication) {
+        print("applicationDidEnterBackground")
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     }
 
     func applicationWillEnterForeground(application: UIApplication) {
+        print("applicationWillEnterForeground")
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     }
 
     func applicationDidBecomeActive(application: UIApplication) {
+        print("applicationDidBecomeActive")
+        FBSDKAppEvents.activateApp()
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
 

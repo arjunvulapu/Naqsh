@@ -1,0 +1,53 @@
+PODS:
+  - Alamofire (3.5.0)
+  - DACircularProgress (2.3.1)
+  - DZNEmptyDataSet (1.8.1)
+  - IDMPhotoBrowser (1.8.4):
+    - DACircularProgress
+    - pop
+    - SDWebImage
+  - IQKeyboardManager (4.0.6)
+  - JVFloatLabeledTextField (1.1.1)
+  - KIImagePager (2.1.1)
+  - MapleBacon (2.0.8)
+  - pop (1.0.9)
+  - Realm (1.1.0):
+    - Realm/Headers (= 1.1.0)
+  - Realm/Headers (1.1.0)
+  - RealmSwift (1.1.0):
+    - Realm (= 1.1.0)
+  - SDWebImage (3.8.2):
+    - SDWebImage/Core (= 3.8.2)
+  - SDWebImage/Core (3.8.2)
+  - SVProgressHUD (2.0.3)
+  - XCDYouTubeKit (2.5.3)
+
+DEPENDENCIES:
+  - Alamofire (~> 3.4)
+  - DZNEmptyDataSet
+  - IDMPhotoBrowser
+  - IQKeyboardManager
+  - JVFloatLabeledTextField
+  - KIImagePager
+  - MapleBacon
+  - RealmSwift
+  - SVProgressHUD
+  - XCDYouTubeKit
+
+SPEC CHECKSUMS:
+  Alamofire: b70a7352335f8ea5babd0a923eb7e8eacc67b877
+  DACircularProgress: 4dd437c0fc3da5161cb289e07ac449493d41db71
+  DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
+  IDMPhotoBrowser: b574fe3229754e701f32df271afbc4ac7e4e1997
+  IQKeyboardManager: c52debb1967799ae7addb98eab0cf328083a874f
+  JVFloatLabeledTextField: 0e5524b097f102036214dd8279edc8ecf08b5e18
+  KIImagePager: 3294254e5e3f76c62edc8bd89da4d0b5ed010b19
+  MapleBacon: 32e3590e1730485b93f450283ff242f9444efc12
+  pop: f667631a5108a2e60d9e8797c9b32ddaf2080bce
+  Realm: ceecf1a4540c4ce9efe196fe73fa9855bce05bd8
+  RealmSwift: 838058b2db95b12cb86bd0cf209df642c33fb60a
+  SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
+  SVProgressHUD: b0830714205bea1317ea1a2ebc71e5633af334d4
+  XCDYouTubeKit: 90690f9e3523735dc93b8024269d991b0cfffe78
+
+COCOAPODS: 0.39.0
