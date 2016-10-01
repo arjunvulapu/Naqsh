@@ -122,7 +122,7 @@ public class Resizer {
     }
 
     private class func croppedImageFromImage(image: UIImage, toBounds bounds: CGRect) -> UIImage? {
-        if let cgimage = CGImageCreateWithImageInRect(image.CGImage, bounds) {
+        if let cgimage = CGImageCreateWithImageInRect(image.CGImage!, bounds) {
             return UIImage(CGImage: cgimage)
         }
         return nil
@@ -135,12 +135,12 @@ public class Resizer {
         let transposedRect = CGRect(x: 0, y: 0, width: newRect.size.height, height: newRect.size.width)
         let imageRef = image.CGImage
                                         
-        let bitmap = CGBitmapContextCreate(nil, Int(newRect.size.width), Int(newRect.size.height), CGImageGetBitsPerComponent(imageRef), CGImageGetBytesPerRow(imageRef) * Int(deviceScale), CGImageGetColorSpace(imageRef), CGImageGetBitmapInfo(imageRef).rawValue)
+        let bitmap = CGBitmapContextCreate(nil, Int(newRect.size.width), Int(newRect.size.height), CGImageGetBitsPerComponent(imageRef!), CGImageGetBytesPerRow(imageRef!) * Int(deviceScale), CGImageGetColorSpace(imageRef!)!, CGImageGetBitmapInfo(imageRef!).rawValue)
         
-        CGContextConcatCTM(bitmap, transform)
-        CGContextSetInterpolationQuality(bitmap, quality)
-        CGContextDrawImage(bitmap, transpose ? transposedRect : newRect, imageRef)
-                                        if let cgimage = CGBitmapContextCreateImage(bitmap) {
+        CGContextConcatCTM(bitmap!, transform)
+        CGContextSetInterpolationQuality(bitmap!, quality)
+        CGContextDrawImage(bitmap!, transpose ? transposedRect : newRect, imageRef!)
+                                        if let cgimage = CGBitmapContextCreateImage(bitmap!) {
                                             return UIImage(CGImage: cgimage)
                                         }
                                         return nil
