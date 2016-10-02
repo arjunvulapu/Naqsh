@@ -364,9 +364,11 @@ class NewsDetailsViewController: BaseViewController, UIWebViewDelegate, UITableV
             }
             cell.showWhatsappOption = {
                 if self.feed!.whatsappStr != nil {
-                    if let url = NSURL(string: "whatsapp://send?text=\(self.feed!.whatsappStr)") {
-                        if UIApplication.sharedApplication().canOpenURL(url) == true {
-                            UIApplication.sharedApplication().openURL(url)
+                    let urlStringEncoded = String(format: "whatsapp://send?text=%@", self.feed!.whatsappStr.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLFragmentAllowedCharacterSet())!)
+                    let url = NSURL(string: urlStringEncoded)
+                    if url != nil {
+                        if UIApplication.sharedApplication().canOpenURL(url!) == true {
+                            UIApplication.sharedApplication().openURL(url!)
                         } else {
                             self.showErrorAlert("whatsapp_missing")
                         }

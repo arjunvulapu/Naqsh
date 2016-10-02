@@ -36,8 +36,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UITabBar.appearance().tintColor = UIColor.whiteColor()
         UIButton.appearance().semanticContentAttribute = .ForceRightToLeft
         UILabel.appearance().semanticContentAttribute = .ForceRightToLeft
-        UITableView.appearance().semanticContentAttribute = .ForceRightToLeft
-        UITableViewCell.appearance().semanticContentAttribute = .ForceRightToLeft
+//        UITableView.appearance().semanticContentAttribute = .ForceRightToLeft
+//        UITableViewCell.appearance().semanticContentAttribute = .ForceRightToLeft
         reloadTabs()
     }
     

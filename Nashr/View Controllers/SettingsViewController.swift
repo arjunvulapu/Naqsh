@@ -138,7 +138,10 @@ class SettingsViewController: BaseViewController, UITableViewDataSource, UITable
         }
     
         
-        cell.buttonADd.setTitle(Localization.get("unfollow"), forState: .Normal)
+        cell.buttonADd.setBackgroundImage(UIImage(named: "profile_unfollow.png"), forState: .Normal)
+        cell.buttonADd.setTitle("", forState: .Normal)
+//        cell.buttonADd.setTitle("\u{2714}", forState: .Normal)
+//        cell.buttonADd.setTitle(Localization.get("unfollow"), forState: .Normal)
         cell.buttonADd.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         cell.buttonADd.backgroundColor = theme_color
         cell.channelToggledCompleted = {

@@ -141,28 +141,40 @@ class ChannelsViewController: BaseViewController, UITableViewDataSource, UITable
             cell.imageViewChannel.setImageWithURL(imageURL)
         }
         if channel.selected == true {
-            //cell.buttonADd.setBackgroundImage(UIImage(named: "profile_unfollow.png"), forState: .Normal)
-            cell.buttonADd.setTitle(Localization.get("unfollow"), forState: .Normal)
+            cell.buttonADd.setBackgroundImage(UIImage(named: "profile_unfollow.png"), forState: .Normal)
+            cell.buttonADd.setTitle("", forState: .Normal)
+//            cell.buttonADd.setTitle(Localization.get("unfollow"), forState: .Normal)
+//            cell.buttonADd.setTitle("\u{2714}", forState: .Normal)
             cell.buttonADd.setTitleColor(UIColor.whiteColor(), forState: .Normal)
             cell.buttonADd.backgroundColor = theme_color
         } else {
             cell.buttonADd.setTitle(Localization.get("follow"), forState: .Normal)
             cell.buttonADd.setTitleColor(theme_color, forState: .Normal)
             cell.buttonADd.backgroundColor = UIColor.clearColor()
-            //cell.buttonADd.setBackgroundImage(nil, forState: .Normal)
+            cell.buttonADd.setBackgroundImage(nil, forState: .Normal)
         }
         
         cell.channelToggledCompleted = {
             if channel.selected == true {
                 channel.selected = false
+                cell.buttonADd.setBackgroundImage(nil, forState: .Normal)
                 cell.buttonADd.setTitle(Localization.get("follow"), forState: .Normal)
                 cell.buttonADd.setTitleColor(theme_color, forState: .Normal)
                 cell.buttonADd.backgroundColor = UIColor.clearColor()
+                self.makeCall(Page.followChannel, params: ["chanel_id":channel.id, "type":"add"], completionHandler: { (response) in
+                    
+                })
             } else {
                 channel.selected = true
-                cell.buttonADd.setTitle(Localization.get("unfollow"), forState: .Normal)
+                cell.buttonADd.setTitle("", forState: .Normal)
+                cell.buttonADd.setBackgroundImage(UIImage(named: "profile_unfollow.png"), forState: .Normal)
+//                cell.buttonADd.setTitle("\u{2714}", forState: .Normal)
+//                cell.buttonADd.setTitle(Localization.get("unfollow"), forState: .Normal)
                 cell.buttonADd.setTitleColor(UIColor.whiteColor(), forState: .Normal)
                 cell.buttonADd.backgroundColor = theme_color
+                self.makeCall(Page.followChannel, params: ["chanel_id":channel.id, "type":"remove"], completionHandler: { (response) in
+                    
+                })
             }
             
             self.saveStatus()

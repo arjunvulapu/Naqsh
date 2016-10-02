@@ -21,6 +21,7 @@ enum Page: String {
     case reportAbuse = "report_abuse.php"
     case tvLiveCategories = "tv-category.php"
     case tvLinkFull = "tv-full.php"
+    case followChannel = "follow_cnt.php"
 }
 
 class Api {
