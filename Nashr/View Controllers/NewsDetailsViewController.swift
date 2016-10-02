@@ -336,7 +336,7 @@ class NewsDetailsViewController: BaseViewController, UIWebViewDelegate, UITableV
             cell.labelDescription.preferredMaxLayoutWidth = CGRectGetWidth(self.tableView.bounds)
             cell.selectionStyle = .None
             if self.feed!.data.characters.count > 0 {
-                let html = "<html><head><style>p{line-height:1.5em;font-size:\(self.fontSize)px;font-weight:\(self.fontStyle);font-family:\"NotoNaskhArabic\";color:#797979;}</style></head><body>\(self.feed!.data)</body></html>"
+                let html = "<html><head><style>p{line-height:1.5em;font-size:\(self.fontSize)px;font-weight:\(self.fontStyle);font-family:\"NotoNaskhArabic\";color:#666666;}</style></head><body>\(self.feed!.data)</body></html>"
                 let attrStr = try! NSAttributedString(data: html.dataUsingEncoding(NSUTF16StringEncoding)!, options: [NSDocumentTypeDocumentAttribute:NSHTMLTextDocumentType], documentAttributes: nil)
                 cell.labelDescription.attributedText = attrStr
             } else {

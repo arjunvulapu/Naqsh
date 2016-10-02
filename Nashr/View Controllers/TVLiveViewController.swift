@@ -106,6 +106,10 @@ class TVLiveViewController: BaseViewController, UICollectionViewDelegate, UIColl
         self.collectionView.reloadData()
     }
     
+    override func scrollToTop()  {
+        self.collectionView.scrollToItemAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: true)
+    }
+    
     override func viewWillAppear(animated: Bool) {
         self.tabBarController?.tabBar.hidden = false
     }

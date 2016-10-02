@@ -24,6 +24,8 @@ class NewsViewController: SearchBaseViewController, UITableViewDataSource, UITab
     var feeds:[Feed] = []
     var countryId = ""
     var source = ""
+    var firstId = ""
+    var requestInProgress = false
     
     @IBOutlet weak var button4: UIButton!
     @IBOutlet weak var button3: UIButton!
@@ -75,17 +77,13 @@ class NewsViewController: SearchBaseViewController, UITableViewDataSource, UITab
     }
     
     let pagingSpinner = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
-    var tapGesture:UITapGestureRecognizer?
     override func viewDidLoad() {
         super.viewDidLoad()
         pagingSpinner.color = UIColor(red: 22.0/255.0, green: 106.0/255.0, blue: 176.0/255.0, alpha: 1.0)
         pagingSpinner.hidesWhenStopped = true
         pagingSpinner.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 44);
         tableView.tableFooterView = pagingSpinner
-
-        self.tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture))
-        self.tapGesture!.numberOfTapsRequired = 2;
-
+        
         self.navigationItem.title = Localization.get("tab_news")
         
         self.view.backgroundColor = UIColor.whiteColor()
@@ -120,6 +118,8 @@ class NewsViewController: SearchBaseViewController, UITableViewDataSource, UITab
         self.button4.layer.borderWidth = 1
         self.button4.setTitleColor(theme_color, forState: .Normal)
         self.button4.addTarget(self, action: #selector(selectType), forControlEvents: .TouchUpInside)
+        
+        NSTimer.scheduledTimerWithTimeInterval(10, target: self, selector: #selector(fetchNewFeeds), userInfo: nil, repeats: true)
     
         resetButtons()
         
@@ -141,6 +141,49 @@ class NewsViewController: SearchBaseViewController, UITableViewDataSource, UITab
             self.presentPopupViewController(vc, animationType: MJPopupViewAnimationSlideBottomTop)
         } else {
             self.selectType(self.button1)
+        }
+    }
+    
+    func fetchNewFeeds() {
+        if requestInProgress {
+            return
+        }
+        
+        if firstId.characters.count == 0 {
+            return
+        }
+        
+        self.requestInProgress = true
+        print("loading new feeds from id: \(self.firstId)")
+        var dictionary:[String:AnyObject] = self.params
+        dictionary["first_id"] = self.firstId
+        makeCall(Page.feeds, params: dictionary, showIndicator: false) { (response) in
+            print("result arrived")
+            self.requestInProgress = false
+            let array = response as! NSArray
+            if array.count == 0 {
+                return
+            }
+            
+            var paths:[NSIndexPath] = []            
+            var tempArray:[Feed] = []
+            for index in 0..<array.count {
+                paths.append(NSIndexPath(forRow: index, inSection: 0))
+                let item = array[index]
+                let feed = Feed(fromDictionary: item as! NSDictionary)
+                if index == 0 {
+                    self.firstId = feed.id
+                }
+                tempArray.append(feed)
+            }
+            self.feeds.insertContentsOf(tempArray, at: 0)
+            self.tableView.emptyDataSetSource = self
+            self.tableView.emptyDataSetDelegate = self
+            
+            self.tableView.beginUpdates()
+            self.tableView.insertRowsAtIndexPaths(paths, withRowAnimation: UITableViewRowAnimation.Automatic)
+            self.tableView.endUpdates()
+            self.refreshControl.endRefreshing()
         }
     }
     
@@ -213,16 +256,13 @@ class NewsViewController: SearchBaseViewController, UITableViewDataSource, UITab
         self.button2.setTitle(Localization.get("source"), forState: .Normal)
         self.button3.setTitle(Localization.get("country"), forState: .Normal)
         self.button4.setTitle(Localization.get("urgent"), forState: .Normal)
-        
-        self.tabBarController?.tabBar.addGestureRecognizer(self.tapGesture!)
     }
     
     override func viewWillDisappear(animated: Bool) {
-        self.tabBarController?.tabBar.removeGestureRecognizer(self.tapGesture!)
     }
     
     
-    func handleTapGesture(sender:UITapGestureRecognizer) {
+    override func scrollToTop() {
         self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: true)
     }
     
@@ -359,11 +399,13 @@ class NewsViewController: SearchBaseViewController, UITableViewDataSource, UITab
     }
     
     func fetchFeeds(showIndicator:Bool = true) {
+        self.requestInProgress = true
 //        self.params["start"] = (pageIndex * 10)
 //        self.params["count"] = 10
         self.params["page"] = pageIndex
         makeCall(Page.feeds, params: self.params, showIndicator: showIndicator) { (response) in
             print("result arrived")
+            self.requestInProgress = false
             
             self.pagingSpinner.stopAnimating()
             self.pagingSpinner.hidden = true
@@ -373,17 +415,25 @@ class NewsViewController: SearchBaseViewController, UITableViewDataSource, UITab
                 self.feeds.removeAll()
             }
             
-            
             if self.pageIndex == 1 {
                 self.feeds.removeAll()
-                for item in array {
-                    self.feeds.append(Feed(fromDictionary: item as! NSDictionary))
+                for index in 0..<array.count {
+                    let item = array[index]
+                    let feed = Feed(fromDictionary: item as! NSDictionary)
+                    self.feeds.append(feed)
+                    if index == 0 {
+                        // set the firstId for background fetch
+                        self.firstId = feed.id
+                    }
                 }
                 
                 self.tableView.contentOffset = CGPointMake(0, 0)
                 self.tableView.reloadData()
 
             } else {
+                if array.count == 0 {
+                    return
+                }
                 
                 let count = self.feeds.count
                 var paths:[NSIndexPath] = []

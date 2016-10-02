@@ -47,6 +47,9 @@ class BaseViewController: UIViewController, UISearchBarDelegate, PopupCloseDeleg
         //self.navigationController?.navigationBar.semanticContentAttribute = .ForceLeftToRight
     }
     
+    func scrollToTop() {
+    }
+    
     func closePopup(vc: UIViewController) {
         self.dismissPopupViewControllerWithanimationType(MJPopupViewAnimationSlideBottomTop)
     }

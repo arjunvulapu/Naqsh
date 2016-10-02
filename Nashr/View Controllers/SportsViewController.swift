@@ -57,7 +57,6 @@ class SportsViewController: SearchBaseViewController, DZNEmptyDataSetSource, DZN
     }
     
     let pagingSpinner = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
-    var tapGesture:UITapGestureRecognizer?
     override func viewDidLoad() {
         super.viewDidLoad()
         pagingSpinner.color = UIColor(red: 22.0/255.0, green: 106.0/255.0, blue: 176.0/255.0, alpha: 1.0)
@@ -65,9 +64,6 @@ class SportsViewController: SearchBaseViewController, DZNEmptyDataSetSource, DZN
         pagingSpinner.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 44);
         tableView.tableFooterView = pagingSpinner
         
-        self.tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture))
-        self.tapGesture!.numberOfTapsRequired = 2;
-
         self.button1.layer.borderColor = theme_color.CGColor
         self.button1.layer.borderWidth = 1
         self.button1.setTitleColor(theme_color, forState: .Normal)
@@ -197,16 +193,9 @@ class SportsViewController: SearchBaseViewController, DZNEmptyDataSetSource, DZN
         
         self.button1.setTitle(Localization.get("latest"), forState: .Normal)
         self.button2.setTitle(Localization.get("source"), forState: .Normal)
-
-        self.tabBarController?.tabBar.addGestureRecognizer(self.tapGesture!)
     }
     
-    override func viewWillDisappear(animated: Bool) {
-        self.tabBarController?.tabBar.removeGestureRecognizer(self.tapGesture!)
-    }
-    
-    
-    func handleTapGesture(sender:UITapGestureRecognizer) {
+    override func scrollToTop() {
         self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: true)
     }
 

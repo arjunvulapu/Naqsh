@@ -23,10 +23,11 @@ class MyTabBar : UITabBar {
 }
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegate {
 
     var window: UIWindow?
     var dictionary:NSDictionary?
+    var lastViewController:UIViewController?
 
     func reloadUI() {
         self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("tabbarcontroller")
@@ -70,6 +71,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func reloadTabs() {
         let tabbar:UITabBarController = self.window?.rootViewController as! UITabBarController
+        tabbar.delegate = self
         tabbar.selectedIndex = 0
 
         tabbar.tabBar.items![4].title = Localization.get("tab_settings")
@@ -82,6 +84,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             [NSFontAttributeName: UIFont(name:"HelveticaNeueLTArabic-Bold", size:13)!,
                 NSForegroundColorAttributeName: UIColor.grayColor()],
             forState: .Normal)
+    }
+    
+    func tabBarController(tabBarController: UITabBarController, didSelectViewController viewController: UIViewController) {
+        if viewController == self.lastViewController {
+            let vc:BaseViewController = (viewController as! UINavigationController).topViewController as! BaseViewController
+            vc.scrollToTop()
+        }
+        
+        lastViewController = viewController
     }
     
     func application(application: UIApplication, supportedInterfaceOrientationsForWindow window: UIWindow?) -> UIInterfaceOrientationMask {
