@@ -12,6 +12,7 @@ import Social
 
 class SettingsViewController: BaseViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
 
+    @IBOutlet weak var buttonContainer: UIView!
     @IBOutlet weak var tableView: UITableView!
     var categories:[AppCateogry] = []
     var channels:[Chanel] = []
@@ -28,7 +29,12 @@ class SettingsViewController: BaseViewController, UITableViewDataSource, UITable
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        self.buttonContainer.layer.cornerRadius = 5
+        self.buttonContainer.clipsToBounds = true
+        self.buttonContainer.layer.borderColor = theme_color.CGColor
+        self.buttonContainer.layer.borderWidth = 1
+        
         self.button1.layer.borderColor = theme_color.CGColor
         self.button1.layer.borderWidth = 1
         self.button1.setTitleColor(theme_color, forState: .Normal)
@@ -89,6 +95,7 @@ class SettingsViewController: BaseViewController, UITableViewDataSource, UITable
         let button = sender as! UIButton
         button.backgroundColor = theme_color
         button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        //self.navigationItem.title = button.titleLabel?.text
         
         if button == self.button1 {
             self.collectionView.hidden = false

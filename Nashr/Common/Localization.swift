@@ -55,7 +55,6 @@ class Localization {
     var words:[String:String] = [:]
     static let sharedInstance = Localization()
     
-    
     private init() {
         let data = try! NSData(contentsOfURL: NSURL(fileURLWithPath: Localization.path), options: NSDataReadingOptions.DataReadingMappedIfSafe)
         self.json = try! NSJSONSerialization.JSONObjectWithData(data, options: .MutableContainers) as! NSDictionary

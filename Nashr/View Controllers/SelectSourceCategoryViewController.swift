@@ -17,6 +17,7 @@ class SelectSourceCategoryViewController: BaseViewController , UITableViewDelega
     @IBOutlet weak var buttonCancel: UIButton!
     @IBOutlet weak var labelTitle: UILabel!
     var selectedChannel:((channel:Chanel) -> Void)?
+    var cancel:(() -> Void)?
     var delegate:PopupCloseDelegate?
     var onlyGenerally = false
     var channels:[Chanel] = []
@@ -96,6 +97,7 @@ class SelectSourceCategoryViewController: BaseViewController , UITableViewDelega
     }
     
     @IBAction func cancel(sender: AnyObject) {
+        self.cancel?()
         self.delegate?.closePopup(self)
     }
     

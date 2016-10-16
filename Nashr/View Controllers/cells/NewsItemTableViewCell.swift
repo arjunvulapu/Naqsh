@@ -56,7 +56,8 @@ class NewsItemTableViewCell: UITableViewCell {
             self.labelFullDate.textAlignment = .Right
         }
         self.labelDateTime.textAlignment = .Right
-
+        
+        self.imageViewFeed?.image = self.scaleImage(UIImage(named: "Loading.png")!, maximumWidth: 400)
     }
 
     override func setSelected(selected: Bool, animated: Bool) {

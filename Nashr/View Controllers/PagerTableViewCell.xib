@@ -21,10 +21,26 @@
                     <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="video.png" translatesAutoresizingMaskIntoConstraints="NO" id="7nG-39-saM">
                         <rect key="frame" x="8" y="8" width="304" height="206.5"/>
                     </imageView>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tMg-Q1-ueD">
+                        <rect key="frame" x="116" y="75" width="88" height="73"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="73" id="MAq-x6-poQ"/>
+                            <constraint firstAttribute="width" constant="88" id="dH4-HS-rpX"/>
+                        </constraints>
+                        <state key="normal">
+                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        </state>
+                        <connections>
+                            <action selector="playVideo:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="CPb-AR-ATg"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="tMg-Q1-ueD" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="0yx-17-KN0"/>
                     <constraint firstItem="7nG-39-saM" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="8dB-tc-LUI"/>
                     <constraint firstItem="nQh-UP-X1t" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="Aed-hA-7uc"/>
+                    <constraint firstItem="tMg-Q1-ueD" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="OPN-7f-XOY"/>
                     <constraint firstItem="nQh-UP-X1t" firstAttribute="bottom" secondItem="H2p-sc-9uM" secondAttribute="bottomMargin" id="PmJ-vv-CHp"/>
                     <constraint firstItem="nQh-UP-X1t" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="Pmt-y4-eNg"/>
                     <constraint firstItem="nQh-UP-X1t" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="Z8Y-xh-csc"/>
@@ -34,6 +50,7 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="buttonPlay" destination="tMg-Q1-ueD" id="au7-gL-gkr"/>
                 <outlet property="pager" destination="nQh-UP-X1t" id="Atx-Oe-24Q"/>
                 <outlet property="videoIcon" destination="7nG-39-saM" id="Rg7-Lv-qw0"/>
             </connections>

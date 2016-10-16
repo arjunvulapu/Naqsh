@@ -15,6 +15,7 @@ class SelectCategoryViewController: BaseViewController, UITableViewDelegate, UIT
     
     @IBOutlet weak var lagelTitle: UILabel!
     var selectedCategory:((category:AppCateogry) -> Void)?
+    var cancel:(() -> Void)?
     var delegate:PopupCloseDelegate?
     
     @IBOutlet weak var buttonCancenl: UIButton!
@@ -66,6 +67,7 @@ class SelectCategoryViewController: BaseViewController, UITableViewDelegate, UIT
     }
     
     @IBAction func cancel(sender: AnyObject) {
+        self.cancel?()
         self.delegate?.closePopup(self)
     }
     

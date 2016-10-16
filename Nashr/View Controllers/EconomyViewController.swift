@@ -10,13 +10,15 @@ import UIKit
 import RealmSwift
 import DZNEmptyDataSet
 
-class EconomyViewController: SearchBaseViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+class EconomyViewController: BaseViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
 
+    @IBOutlet weak var buttonContainer: UIView!
     @IBOutlet weak var tableView: UITableView!
     var feedType:FeedType = .Latest
     var pageIndex = 1
     var params:[String:AnyObject] = [:]
     var source = ""
+    var requestInProgress = false
     
     @IBOutlet weak var button1: UIButton!
     @IBOutlet weak var button2: UIButton!
@@ -24,10 +26,14 @@ class EconomyViewController: SearchBaseViewController, DZNEmptyDataSetSource, DZ
     var refreshControl:UIRefreshControl = UIRefreshControl()
     var feeds:[Feed] = []
   
+    
     @IBAction func searchFeeds(sender: AnyObject) {
-        self.search()
+        let vc:SearchViewController = Utils.getViewController("SearchViewController") as! SearchViewController
+        vc.searchParams = self.params
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
+    /*
     override func cancelSearch() {
         var sender:UIButton? = nil
         self.params.removeAll()
@@ -55,6 +61,7 @@ class EconomyViewController: SearchBaseViewController, DZNEmptyDataSetSource, DZ
         }
         self.fetchFeeds(true)
     }
+    */
     
     
     @IBAction func selectSources(sender: AnyObject) {
@@ -65,6 +72,12 @@ class EconomyViewController: SearchBaseViewController, DZNEmptyDataSetSource, DZ
     let pagingSpinner = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.buttonContainer.layer.cornerRadius = 5
+        self.buttonContainer.clipsToBounds = true
+        self.buttonContainer.layer.borderColor = theme_color.CGColor
+        self.buttonContainer.layer.borderWidth = 1
+        
         pagingSpinner.color = UIColor(red: 22.0/255.0, green: 106.0/255.0, blue: 176.0/255.0, alpha: 1.0)
         pagingSpinner.hidesWhenStopped = true
         pagingSpinner.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 44);
@@ -79,6 +92,9 @@ class EconomyViewController: SearchBaseViewController, DZNEmptyDataSetSource, DZ
         self.button2.layer.borderWidth = 1
         self.button2.setTitleColor(theme_color, forState: .Normal)
         self.button2.addTarget(self, action: #selector(selectType), forControlEvents: .TouchUpInside)
+        
+        self.button1.setTitle(Localization.get("latest"), forState: .Normal)
+        self.button2.setTitle(Localization.get("source"), forState: .Normal)
         
         self.navigationItem.title = Localization.get("title_economy")
         
@@ -109,7 +125,7 @@ class EconomyViewController: SearchBaseViewController, DZNEmptyDataSetSource, DZ
         }
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(sourceSelected), name: "NoEconomyNewsSource", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(reloadData), name: UIApplicationDidBecomeActiveNotification, object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(reloadData), name: UIApplicationDidBecomeActiveNotification, object: nil)
 
     }
     
@@ -140,6 +156,7 @@ class EconomyViewController: SearchBaseViewController, DZNEmptyDataSetSource, DZ
         let button = sender as! UIButton
         button.backgroundColor = theme_color
         button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        self.navigationItem.title = button.titleLabel?.text
         
         let count = getChannelCount()
         if count == 0 {
@@ -173,12 +190,6 @@ class EconomyViewController: SearchBaseViewController, DZNEmptyDataSetSource, DZ
         self.selectType(self.button1)
     }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(true)
-        self.button1.setTitle(Localization.get("latest"), forState: .Normal)
-        self.button2.setTitle(Localization.get("source"), forState: .Normal)
-    }
-    
     override func scrollToTop() {
         self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: true)
     }
@@ -189,16 +200,32 @@ class EconomyViewController: SearchBaseViewController, DZNEmptyDataSetSource, DZ
             if self.source.characters.count > 0 {
                 self.pageIndex = 1
                 self.params["chanels"] = self.source
-                self.feeds.removeAll()
+                
+                print ("scrolling to top")
+                if self.feeds.count > 0 {
+                    self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: true)
+                }
                 self.fetchFeeds()
             } else {
                 let vc:SelectSourceCategoryViewController = SelectSourceCategoryViewController(nibName: "SelectSourceCategoryViewController", bundle: nil)
                 vc.parentCategory = "29"
+                vc.cancel = {
+                    self.resetButtons()
+                    let button:UIButton? = self.button1
+                    button!.backgroundColor = theme_color
+                    button!.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+                    self.navigationItem.title = button!.titleLabel?.text
+                }
                 vc.selectedChannel = {channel in
+                    self.navigationItem.title = channel.Title
                     self.pageIndex = 1
-                    self.feeds.removeAll()
                     self.params["chanels"] = channel.id
                     self.source = channel.id
+                    
+                    print ("scrolling to top")
+                    if self.feeds.count > 0 {
+                        self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: true)
+                    }
                     self.fetchFeeds()
                 }
                 vc.delegate = self
@@ -218,14 +245,23 @@ class EconomyViewController: SearchBaseViewController, DZNEmptyDataSetSource, DZ
                     break
                 }
             }
+            
+            
+            print ("scrolling to top")
+            if self.feeds.count > 0 {
+                self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: true)
+            }
             self.params["chanels"] = channelIds.joinWithSeparator(",")
         }
         
-        self.feeds.removeAll()
         self.fetchFeeds()
     }
     
     func fetchFeeds(showIndicator:Bool = true) {
+        if self.requestInProgress == true {
+            return
+        }
+        self.requestInProgress = true
 //        self.params["start"] = (pageIndex * 10)
 //        self.params["count"] = 10
         self.params["page"] = self.pageIndex
@@ -236,9 +272,9 @@ class EconomyViewController: SearchBaseViewController, DZNEmptyDataSetSource, DZ
             self.pagingSpinner.hidden = true
 
             let array = response as! NSArray
-            if !self.searchbarHidden {
-                self.feeds.removeAll()
-            }
+//            if !self.searchbarHidden {
+//                self.feeds.removeAll()
+//            }
             
             if self.pageIndex == 1 {
                 self.feeds.removeAll()
@@ -267,8 +303,10 @@ class EconomyViewController: SearchBaseViewController, DZNEmptyDataSetSource, DZ
                 self.tableView.beginUpdates()
                 self.tableView.insertRowsAtIndexPaths(paths, withRowAnimation: UITableViewRowAnimation.Automatic)
                 self.tableView.endUpdates()
+                
             }
 
+            self.requestInProgress = false
         }
     }
     

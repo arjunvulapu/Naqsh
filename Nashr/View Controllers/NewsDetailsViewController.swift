@@ -14,6 +14,7 @@ import Alamofire
 import SVProgressHUD
 import FBSDKShareKit
 import FBSDKMessengerShareKit
+import XCDYouTubeKit
 
 class NewsDetailsViewController: BaseViewController, UIWebViewDelegate, UITableViewDelegate, UITableViewDataSource, MFMailComposeViewControllerDelegate {
 
@@ -288,6 +289,23 @@ class NewsDetailsViewController: BaseViewController, UIWebViewDelegate, UITableV
         }
     }
     
+    func extractYoutubeIdFromLink(link: String) -> String? {
+        
+        let pattern = "((?<=(v|V)/)|(?<=be/)|(?<=(\\?|\\&)v=)|(?<=embed/))([\\w-]++)"
+        guard let regExp = try? NSRegularExpression(pattern: pattern, options: .CaseInsensitive) else {
+            return nil
+        }
+        let nsLink = link as NSString
+        let options = NSMatchingOptions(rawValue: 0)
+        let range = NSRange(location: 0,length: nsLink.length)
+        let matches = regExp.matchesInString(link as String, options:options, range:range)
+        if let firstMatch = matches.first {
+            print(firstMatch)
+            return nsLink.substringWithRange(firstMatch.range)
+        }
+        return nil
+    }
+    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         if indexPath.section == 0 {
@@ -319,13 +337,31 @@ class NewsDetailsViewController: BaseViewController, UIWebViewDelegate, UITableV
             }
             
             cell.imageSelected = {
-                self.showImageSlideShow()
+                if !self.feed!.video.isEmpty {
+                    let youtubeId = self.extractYoutubeIdFromLink(self.feed!.video)
+                    if youtubeId != nil {
+                        let vc:XCDYouTubeVideoPlayerViewController = XCDYouTubeVideoPlayerViewController(videoIdentifier: youtubeId)
+                        self.presentViewController(vc, animated: true, completion: nil)
+                    }
+                } else {
+                    self.showImageSlideShow()
+                }
+            }
+            
+            cell.startVideo = {
+                let youtubeId = self.extractYoutubeIdFromLink(self.feed!.video)
+                if youtubeId != nil {
+                    let vc:XCDYouTubeVideoPlayerViewController = XCDYouTubeVideoPlayerViewController(videoIdentifier: youtubeId)
+                    self.presentViewController(vc, animated: true, completion: nil)
+                }
             }
             
             if self.feed!.video.isEmpty {
                 cell.videoIcon?.hidden = true
+                cell.buttonPlay?.hidden = true
             } else {
                 cell.videoIcon?.hidden = false
+                cell.buttonPlay?.hidden = false
             }
 
             cell.showImages(images)
@@ -336,7 +372,7 @@ class NewsDetailsViewController: BaseViewController, UIWebViewDelegate, UITableV
             cell.labelDescription.preferredMaxLayoutWidth = CGRectGetWidth(self.tableView.bounds)
             cell.selectionStyle = .None
             if self.feed!.data.characters.count > 0 {
-                let html = "<html><head><style>p{line-height:1.5em;font-size:\(self.fontSize)px;font-weight:\(self.fontStyle);font-family:\"NotoNaskhArabic\";color:#666666;}</style></head><body>\(self.feed!.data)</body></html>"
+                let html = "<html><head><style>p{line-height:1.5em;font-size:\(self.fontSize)px;font-weight:\(self.fontStyle);font-family:\"NotoNaskhArabic\";color:#666666;}</style></head><body>\(self.feed!.data)<br/><br/><br/><br/></body></html>"
                 let attrStr = try! NSAttributedString(data: html.dataUsingEncoding(NSUTF16StringEncoding)!, options: [NSDocumentTypeDocumentAttribute:NSHTMLTextDocumentType], documentAttributes: nil)
                 cell.labelDescription.attributedText = attrStr
             } else {
@@ -346,7 +382,12 @@ class NewsDetailsViewController: BaseViewController, UIWebViewDelegate, UITableV
         } else if indexPath.section == 3 {
             let cell:DetailsShareTableViewCell = self.tableView.dequeueReusableCellWithIdentifier("cell_share") as! DetailsShareTableViewCell
             cell.selectionStyle = .None
-            cell.buttonMore.hidden = (self.feed!.link == nil)
+            if (self.feed!.link == nil) || (self.feed!.link.isEmpty == true) {
+                cell.buttonMore.hidden = true
+            } else {
+                cell.buttonMore.hidden = false
+            }
+            //cell.buttonMore.hidden = (self.feed!.link == nil)
             cell.showMoreDetails = {
                 self.openInSafari()
             }

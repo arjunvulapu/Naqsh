@@ -34,7 +34,7 @@ class BaseViewController: UIViewController, UISearchBarDelegate, PopupCloseDeleg
 //        }
         
         //UILabel.appearance().substituteFontName = "NotoNaskhArabic";
-        UILabel.appearanceWhenContainedInInstancesOfClasses([UIButton.self]).substituteFontName = "NotoNaskhArabic-Bold"
+        UILabel.appearanceWhenContainedInInstancesOfClasses([UIButton.self]).substituteFontName = "HelveticaNeueLTArabic-Roman"
         
         self.navigationController?.navigationBar.opaque = true
         self.navigationController?.navigationBar.translucent = false

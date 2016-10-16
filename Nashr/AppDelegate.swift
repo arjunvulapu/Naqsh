@@ -22,6 +22,40 @@ class MyTabBar : UITabBar {
     }
 }
 
+extension NSDate {
+    func yearsFrom(date: NSDate) -> Int {
+        return NSCalendar.currentCalendar().components(.Year, fromDate: date, toDate: self, options: []).year
+    }
+    func monthsFrom(date: NSDate) -> Int {
+        return NSCalendar.currentCalendar().components(.Month, fromDate: date, toDate: self, options: []).month
+    }
+    func weeksFrom(date: NSDate) -> Int {
+        return NSCalendar.currentCalendar().components(.WeekOfYear, fromDate: date, toDate: self, options: []).weekOfYear
+    }
+    func daysFrom(date: NSDate) -> Int {
+        return NSCalendar.currentCalendar().components(.Day, fromDate: date, toDate: self, options: []).day
+    }
+    func hoursFrom(date: NSDate) -> Int {
+        return NSCalendar.currentCalendar().components(.Hour, fromDate: date, toDate: self, options: []).hour
+    }
+    func minutesFrom(date: NSDate) -> Int{
+        return NSCalendar.currentCalendar().components(.Minute, fromDate: date, toDate: self, options: []).minute
+    }
+    func secondsFrom(date: NSDate) -> Int{
+        return NSCalendar.currentCalendar().components(.Second, fromDate: date, toDate: self, options: []).second
+    }
+    func offsetFrom(date: NSDate) -> String {
+        if yearsFrom(date)   > 0 { return "\(yearsFrom(date))y"   }
+        if monthsFrom(date)  > 0 { return "\(monthsFrom(date))M"  }
+        if weeksFrom(date)   > 0 { return "\(weeksFrom(date))w"   }
+        if daysFrom(date)    > 0 { return "\(daysFrom(date))d"    }
+        if hoursFrom(date)   > 0 { return "\(hoursFrom(date))h"   }
+        if minutesFrom(date) > 0 { return "\(minutesFrom(date))m" }
+        if secondsFrom(date) > 0 { return "\(secondsFrom(date))s" }
+        return ""
+    }
+}
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegate {
 
@@ -34,7 +68,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
 //        UIView.appearance().semanticContentAttribute = .ForceRightToLeft
         //UIView.appearanceWhenContainedInInstancesOfClasses([UITableViewCell.self]).semanticContentAttribute = .Unspecified
         
-        UITabBar.appearance().tintColor = UIColor.whiteColor()
+        UITabBar.appearance().tintColor = theme_color
         UIButton.appearance().semanticContentAttribute = .ForceRightToLeft
         UILabel.appearance().semanticContentAttribute = .ForceRightToLeft
 //        UITableView.appearance().semanticContentAttribute = .ForceRightToLeft
@@ -67,6 +101,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                     print("error: \(error)")
                 }
             })*/
+    }
+    
+    func registerForPushNotifications(application: UIApplication) {
+        let notificationSettings = UIUserNotificationSettings(
+            forTypes: [.Badge, .Sound, .Alert], categories: nil)
+        application.registerUserNotificationSettings(notificationSettings)
     }
     
     func reloadTabs() {
@@ -104,8 +144,40 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         return .Portrait
     }
     
+    func application(application: UIApplication, didRegisterUserNotificationSettings notificationSettings: UIUserNotificationSettings) {
+        if notificationSettings.types != .None {
+            application.registerForRemoteNotifications()
+        }
+    }
+    
+    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+        let tokenChars = UnsafePointer<CChar>(deviceToken.bytes)
+        var tokenString = ""
+        
+        for i in 0..<deviceToken.length {
+            tokenString += String(format: "%02.2hhx", arguments: [tokenChars[i]])
+        }
+        
+        // save token
+        Settings.deviceToken = tokenString
+        
+        Alamofire
+            .request(.POST, Api.getUrl(Page.tokenRegister), parameters: ["device_token":tokenString, "status":"true"])
+            .responseJSON(completionHandler: { (response) in
+                print ("registered")
+            })
+        
+        print("Device Token:", tokenString)
+    }
+    
+    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
+        print("Failed to register:", error)
+    }
+    
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
+        
+        registerForPushNotifications(application)
         
         //UIView.appearance().semanticContentAttribute = .ForceRightToLeft
         IQKeyboardManager.sharedManager().enable = true
@@ -130,6 +202,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
     
     func applicationWillResignActive(application: UIApplication) {
         print("applicationWillResignActive")
+        Settings.lastClosetime = NSDate()
+        
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
     }
@@ -148,6 +222,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
     func applicationDidBecomeActive(application: UIApplication) {
         print("applicationDidBecomeActive")
         FBSDKAppEvents.activateApp()
+        let date = Settings.lastClosetime
+        if date != nil {
+            let currentDate = NSDate()
+            let minutes = currentDate.minutesFrom(date!)
+            if minutes > 2 {
+                reloadUI()
+            }
+        }
+        
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
 

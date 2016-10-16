@@ -19,9 +19,48 @@ class Settings {
         case fontStyle = "FONT_STYLE"
         case titleFontSize = "TITLE_FONT_STYLE"
         case wordsDownloaded = "WORDS_DOWNLOADED"
+        case lastSloseTime = "LAST_CLOSE_TIME"
+        case deviceToken = "DEVICE_TOKEN"
+        case urgentNewsNotification = "URGENT_NEWS_NOTIFICATION"
     }
     
+    static var urgentNewsNotification:Bool? {
+        set(value) {
+            let defaults = NSUserDefaults.standardUserDefaults()
+            defaults.setBool(value!, forKey:Keys.urgentNewsNotification.rawValue)
+            defaults.synchronize()
+        }
+        get {
+            let defaults = NSUserDefaults.standardUserDefaults()
+            return defaults.boolForKey(Keys.urgentNewsNotification.rawValue)
+        }
+    }
     
+    static var deviceToken:String? {
+        set(value) {
+            let defaults = NSUserDefaults.standardUserDefaults()
+            defaults.setValue(value, forKey: Keys.deviceToken.rawValue)
+            defaults.synchronize()
+        }
+        
+        get {
+            let defaults = NSUserDefaults.standardUserDefaults()
+            return defaults.valueForKey(Keys.deviceToken.rawValue) as? String
+        }
+    }
+    
+    static var lastClosetime:NSDate? {
+        set(value) {
+            let defaults = NSUserDefaults.standardUserDefaults()
+            defaults.setValue(value, forKey: Keys.lastSloseTime.rawValue)
+            defaults.synchronize()
+        }
+        
+        get {
+            let defaults = NSUserDefaults.standardUserDefaults()
+            return defaults.valueForKey(Keys.lastSloseTime.rawValue) as? NSDate
+        }
+    }
     
     static var currentFont:(size:Int, style:String) {
         set(values) {

@@ -13,19 +13,22 @@ import Social
 import FBSDKShareKit
 
 
-class NewsViewController: SearchBaseViewController, UITableViewDataSource, UITableViewDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, FBSDKSharingDelegate {
+class NewsViewController: BaseViewController, UITableViewDataSource, UITableViewDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, FBSDKSharingDelegate {
+    @IBOutlet weak var buttonScrollUp: UIButton!
     
+    @IBOutlet weak var buttonContainer: UIView!
     @IBOutlet weak var tableView: UITableView!
-    var feedType:FeedType = .Latest
+    var feedType:FeedType = .Latest, lastFeedType:FeedType = .Latest
     var pageIndex = 1
     var params:[String:AnyObject] = [:]
     //@IBOutlet weak var options: UISegmentedControl!
     var refreshControl:UIRefreshControl = UIRefreshControl()
     var feeds:[Feed] = []
     var countryId = ""
-    var source = ""
+    var source = "", sourceTitle = ""
     var firstId = ""
     var requestInProgress = false
+    
     
     @IBOutlet weak var button4: UIButton!
     @IBOutlet weak var button3: UIButton!
@@ -33,12 +36,17 @@ class NewsViewController: SearchBaseViewController, UITableViewDataSource, UITab
     @IBOutlet weak var button2: UIButton!
     
     @IBAction func searchFeeds(sender: AnyObject) {
-        self.search()
+        //self.search()
+        let vc:SearchViewController = Utils.getViewController("SearchViewController") as! SearchViewController
+        vc.searchParams = self.params
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    override func cancelSearch() {
+    func cancelSearch() {
         var sender:UIButton? = nil
         self.params.removeAll()
+        return
+        
         if feedType == .Latest {
             sender = self.button1
         } else if self.feedType == .Source {
@@ -56,7 +64,28 @@ class NewsViewController: SearchBaseViewController, UITableViewDataSource, UITab
         selectType(sender!)
     }
     
-    override func searchWithText(text: String) {
+    @IBAction func scrollUp(sender: AnyObject) {
+        if self.newFeedsArray == nil { return }
+        
+        var paths:[NSIndexPath] = []
+        for index in 0..<self.newFeedsArray!.count {
+            paths.append(NSIndexPath(forRow: index, inSection: 0))
+        }
+        
+        self.feeds.insertContentsOf(self.newFeedsArray!, at: 0)
+        self.tableView.emptyDataSetSource = self
+        self.tableView.emptyDataSetDelegate = self
+        
+        self.tableView.beginUpdates()
+        self.tableView.insertRowsAtIndexPaths(paths, withRowAnimation: UITableViewRowAnimation.Automatic)
+        self.tableView.endUpdates()
+        self.refreshControl.endRefreshing()
+        
+        self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: true)
+        self.buttonScrollUp.hidden = true
+    }
+    
+    func searchWithText(text: String) {
         self.params.removeAll()
         if feedType == .Latest {
             params["type"] = "latest"
@@ -66,7 +95,7 @@ class NewsViewController: SearchBaseViewController, UITableViewDataSource, UITab
             params["type"] = "urgent"
         } else if self.feedType == .Country {
             params["type"] = "country"
-            params["coutry"] = self.countryId
+            params["country"] = self.countryId
         }
         
         self.pageIndex = 1
@@ -79,6 +108,17 @@ class NewsViewController: SearchBaseViewController, UITableViewDataSource, UITab
     let pagingSpinner = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.buttonScrollUp.backgroundColor = theme_color
+        self.buttonScrollUp.tintColor = UIColor.whiteColor()
+        self.buttonScrollUp.hidden = true
+        self.buttonScrollUp.setTitle(Localization.get("scroll_up_message"), forState: .Normal)
+        
+        self.buttonContainer.layer.cornerRadius = 5
+        self.buttonContainer.clipsToBounds = true
+        self.buttonContainer.layer.borderColor = theme_color.CGColor
+        self.buttonContainer.layer.borderWidth = 1
+        
         pagingSpinner.color = UIColor(red: 22.0/255.0, green: 106.0/255.0, blue: 176.0/255.0, alpha: 1.0)
         pagingSpinner.hidesWhenStopped = true
         pagingSpinner.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 44);
@@ -119,7 +159,12 @@ class NewsViewController: SearchBaseViewController, UITableViewDataSource, UITab
         self.button4.setTitleColor(theme_color, forState: .Normal)
         self.button4.addTarget(self, action: #selector(selectType), forControlEvents: .TouchUpInside)
         
-        NSTimer.scheduledTimerWithTimeInterval(10, target: self, selector: #selector(fetchNewFeeds), userInfo: nil, repeats: true)
+        self.button1.setTitle(Localization.get("latest"), forState: .Normal)
+        self.button2.setTitle(Localization.get("source"), forState: .Normal)
+        self.button3.setTitle(Localization.get("country"), forState: .Normal)
+        self.button4.setTitle(Localization.get("urgent"), forState: .Normal)
+        
+        NSTimer.scheduledTimerWithTimeInterval(20, target: self, selector: #selector(fetchNewFeeds), userInfo: nil, repeats: true)
     
         resetButtons()
         
@@ -133,7 +178,7 @@ class NewsViewController: SearchBaseViewController, UITableViewDataSource, UITab
         }
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(sourceSelected), name: "NoNewsSource", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(reloadData), name: UIApplicationDidBecomeActiveNotification, object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(reloadData), name: UIApplicationDidBecomeActiveNotification, object: nil)
         
         if !Localization.isLanguageSet() {
             let vc:SelectLanguageViewController = SelectLanguageViewController(nibName: "SelectLanguageViewController", bundle: nil)
@@ -144,6 +189,7 @@ class NewsViewController: SearchBaseViewController, UITableViewDataSource, UITab
         }
     }
     
+    var newFeedsArray:[Feed]?
     func fetchNewFeeds() {
         if requestInProgress {
             return
@@ -153,10 +199,63 @@ class NewsViewController: SearchBaseViewController, UITableViewDataSource, UITab
             return
         }
         
-        self.requestInProgress = true
         print("loading new feeds from id: \(self.firstId)")
-        var dictionary:[String:AnyObject] = self.params
+        var dictionary:[String:AnyObject] = [:]
+        
+        if self.feedType == .Source {
+            dictionary["type"] = "source"
+            dictionary["chanels"] = self.source
+        } else {
+            let items = try! Realm().objects(SavedCategory)
+            var channelIds:[String] = []
+
+            if feedType == .Latest {
+                dictionary["type"] = "latest"
+                for cat in items {
+                    if (cat.categoryId == 29) || (cat.categoryId == 4) {
+                        continue
+                    }
+                    
+                    for ch in cat.channels {
+                        channelIds.append("\(ch.channelId)")
+                    }
+                }
+            } else if self.feedType == .Urgent {
+                dictionary["type"] = "urgent"
+                for cat in items {
+                    if (cat.categoryId == 29) || (cat.categoryId == 4) {
+                        continue
+                    }
+                    
+                    for ch in cat.channels {
+                        channelIds.append("\(ch.channelId)")
+                    }
+                }
+            } else if self.feedType == .Country {
+                dictionary["type"] = "country"
+                if self.countryId.characters.count == 0 {
+                    print ("country id not available")
+                    return
+                }
+                for cat in items {
+                    if cat.categoryId == Int(self.countryId)! {
+                        for ch in cat.channels {
+                            channelIds.append("\(ch.channelId)")
+                        }
+                    }
+                }
+
+                if channelIds.count == 0 {
+                    print("no channels in this country are subscribed.. skipping background refresh")
+                    return
+                }
+            }
+            dictionary["chanels"] = channelIds.joinWithSeparator(",")
+        }
+        
         dictionary["first_id"] = self.firstId
+        self.requestInProgress = true
+
         makeCall(Page.feeds, params: dictionary, showIndicator: false) { (response) in
             print("result arrived")
             self.requestInProgress = false
@@ -165,27 +264,28 @@ class NewsViewController: SearchBaseViewController, UITableViewDataSource, UITab
                 return
             }
             
-            var paths:[NSIndexPath] = []            
-            var tempArray:[Feed] = []
+            self.newFeedsArray = []
             for index in 0..<array.count {
-                paths.append(NSIndexPath(forRow: index, inSection: 0))
                 let item = array[index]
                 let feed = Feed(fromDictionary: item as! NSDictionary)
                 if index == 0 {
                     self.firstId = feed.id
                 }
-                tempArray.append(feed)
+                self.newFeedsArray!.append(feed)
             }
-            self.feeds.insertContentsOf(tempArray, at: 0)
-            self.tableView.emptyDataSetSource = self
-            self.tableView.emptyDataSetDelegate = self
             
-            self.tableView.beginUpdates()
-            self.tableView.insertRowsAtIndexPaths(paths, withRowAnimation: UITableViewRowAnimation.Automatic)
-            self.tableView.endUpdates()
-            self.refreshControl.endRefreshing()
+            self.buttonScrollUp.setTitle("\(Localization.get("scroll_up_message")) (\(array.count))", forState: .Normal)
+            self.buttonScrollUp.hidden = false
+            
+            NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: #selector(self.hideNewFeedsButton), userInfo: nil, repeats: false)
         }
     }
+    
+    func hideNewFeedsButton() {
+        self.newFeedsArray?.removeAll()
+        self.buttonScrollUp.hidden = true
+    }
+    
     
     func sourceSelected(notification: NSNotification) {
         if notification.name == "AddedGeneralNewsSource" {
@@ -215,32 +315,37 @@ class NewsViewController: SearchBaseViewController, UITableViewDataSource, UITab
     func selectType(sender:AnyObject) {
         resetButtons()
         
+        print ("scrolling to top")
         let button = sender as! UIButton
         button.backgroundColor = theme_color
         button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        self.navigationItem.title = button.titleLabel?.text
         
         switch button {
         case self.button1:
+            params["type"] = "latest"
             feedType = .Latest
             reloadData()
         case self.button2:
             self.source = ""
+            params["type"] = "source"
+            feedType = .Source
             let items = try! Realm().objects(SavedCategory)
             if items.count == 0 {
                 self.feeds.removeAll()
                 self.tableView.emptyDataSetDelegate = self
                 self.tableView.emptyDataSetSource = self
                 self.tableView.reloadData()
-                
             } else {
-                feedType = .Source
                 reloadData()
             }
         case self.button4:
+            params["type"] = "urgent"
             feedType = .Urgent
             reloadData()
         case self.button3:
             self.countryId = ""
+            params["type"] = "country"
             feedType = .Country
             reloadData()
         default:
@@ -251,11 +356,6 @@ class NewsViewController: SearchBaseViewController, UITableViewDataSource, UITab
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
-        
-        self.button1.setTitle(Localization.get("latest"), forState: .Normal)
-        self.button2.setTitle(Localization.get("source"), forState: .Normal)
-        self.button3.setTitle(Localization.get("country"), forState: .Normal)
-        self.button4.setTitle(Localization.get("urgent"), forState: .Normal)
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -269,10 +369,13 @@ class NewsViewController: SearchBaseViewController, UITableViewDataSource, UITab
     func reloadData() {
         pageIndex = 1
         
+//        if (self.tableView.visibleCells.count > 0) {
+//            self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition:.Top, animated: true)
+//        }
+        
         var channelIds:[String] = []
         let items = try! Realm().objects(SavedCategory)
-
-        self.params.removeAll()
+        
         if self.feedType == .Country {
             if self.countryId.characters.count > 0 {
                 for cat in items {
@@ -287,13 +390,35 @@ class NewsViewController: SearchBaseViewController, UITableViewDataSource, UITab
                 
                 self.pageIndex = 1
                 self.params["chanels"] = channelIds.joinWithSeparator(",")
-                self.feeds.removeAll()
+                if self.feeds.count > 0 {
+                    self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: true)
+                }
+
+                self.lastFeedType = .Country
                 self.fetchFeeds()
             } else {
                 
                 let vc:SelectCategoryViewController = SelectCategoryViewController(nibName: "SelectCategoryViewController", bundle: nil)
+                vc.cancel = {
+                    self.resetButtons()
+                    var button:UIButton? = nil
+                    if self.lastFeedType == .Latest {
+                        button = self.button1
+                    } else if self.lastFeedType == .Source {
+                        button = self.button2
+                    } else if self.lastFeedType == .Country {
+                        button = self.button3
+                    } else if self.lastFeedType == .Urgent {
+                        button = self.button4
+                    }
+                    
+                    self.feedType = self.lastFeedType
+                    button!.backgroundColor = theme_color
+                    button!.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+                    self.navigationItem.title = button!.titleLabel?.text
+                }
                 vc.selectedCategory = {category in
-                    self.feeds.removeAll()
+                    self.lastFeedType = .Country
                     var selectedCat:SavedCategory?
                     for cat in items {
                         if cat.categoryId == Int(category.id) {
@@ -302,15 +427,18 @@ class NewsViewController: SearchBaseViewController, UITableViewDataSource, UITab
                         }
                     }
                     
+                    self.navigationItem.title = category.Title
                     if selectedCat == nil {
                         self.countryId = ""
                         self.tableView.emptyDataSetSource = self
                         self.tableView.emptyDataSetDelegate = self
+                        self.feeds.removeAll()
                         self.tableView.reloadData()
                     } else {
                         if selectedCat!.channels.count == 0 {
                             self.tableView.emptyDataSetSource = self
                             self.tableView.emptyDataSetDelegate = self
+                            self.feeds.removeAll()
                             self.tableView.reloadData()
                         } else {
                             self.countryId = category.id
@@ -322,6 +450,11 @@ class NewsViewController: SearchBaseViewController, UITableViewDataSource, UITab
                                 channelIds.append("\(ch.channelId)")
                             }
                             self.params["chanels"] = channelIds.joinWithSeparator(",")
+                            
+                            if self.feeds.count > 0 {
+                                self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: true)
+                            }
+
                             self.fetchFeeds()
                         }
                     }
@@ -333,7 +466,12 @@ class NewsViewController: SearchBaseViewController, UITableViewDataSource, UITab
             }
         } else if self.feedType == .Urgent {
             channelIds.removeAll()
+            self.lastFeedType = .Urgent
             for cat in items {
+                if (cat.categoryId == 29) || (cat.categoryId == 4) {
+                    continue
+                }
+                
                 for ch in cat.channels {
                     channelIds.append("\(ch.channelId)")
                 }
@@ -346,7 +484,10 @@ class NewsViewController: SearchBaseViewController, UITableViewDataSource, UITab
             } else {
                 self.params["type"] = "urgent"
                 self.params["chanels"] = channelIds.joinWithSeparator(",")
-                self.feeds.removeAll()
+                if self.feeds.count > 0 {
+                    self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: true)
+                }
+
                 fetchFeeds()
             }
         } else {
@@ -369,22 +510,53 @@ class NewsViewController: SearchBaseViewController, UITableViewDataSource, UITab
                 if self.feedType == .Latest {
                     self.pageIndex = 1
                     self.params["chanels"] = channelIds.joinWithSeparator(",")
-                    self.feeds.removeAll()
+                    if self.feeds.count > 0 {
+                        self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: true)
+                    }
+
+                    self.lastFeedType = .Latest
                     fetchFeeds()
                 } else if self.feedType == .Source {
                     if self.source.characters.count > 0 {
+                        self.navigationItem.title = self.sourceTitle
                         self.pageIndex = 1
                         self.params["chanels"] = self.source
-                        self.feeds.removeAll()
+                        if self.feeds.count > 0 {
+                            self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: true)
+                        }
+
+                        self.lastFeedType = .Source
                         self.fetchFeeds()
                     } else {
                         let vc:SelectSourceCategoryViewController = SelectSourceCategoryViewController(nibName: "SelectSourceCategoryViewController", bundle: nil)
                         vc.onlyGenerally = true
+                        vc.cancel = {
+                            self.resetButtons()
+                            var button:UIButton? = nil
+                            if self.lastFeedType == .Latest {
+                                button = self.button1
+                            } else if self.lastFeedType == .Source {
+                                button = self.button2
+                            } else if self.lastFeedType == .Country {
+                                button = self.button3
+                            } else if self.lastFeedType == .Urgent {
+                                button = self.button4
+                            }
+                            self.feedType = self.lastFeedType
+                            button!.backgroundColor = theme_color
+                            button!.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+                            self.navigationItem.title = button!.titleLabel?.text
+                        }
                         vc.selectedChannel = {channel in
+                            self.navigationItem.title = channel.Title
                             self.source = channel.id
+                            self.sourceTitle = channel.title
                             self.pageIndex = 1
                             self.params["chanels"] = channel.id
-                            self.feeds.removeAll()
+                            if self.feeds.count > 0 {
+                                self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: true)
+                            }
+                            self.lastFeedType = .Source
                             self.fetchFeeds()
                         }
                         vc.delegate = self
@@ -399,6 +571,8 @@ class NewsViewController: SearchBaseViewController, UITableViewDataSource, UITab
     }
     
     func fetchFeeds(showIndicator:Bool = true) {
+        if self.requestInProgress == true { return }
+        
         self.requestInProgress = true
 //        self.params["start"] = (pageIndex * 10)
 //        self.params["count"] = 10
@@ -411,11 +585,12 @@ class NewsViewController: SearchBaseViewController, UITableViewDataSource, UITab
             self.pagingSpinner.hidden = true
             
             let array = response as! NSArray
-            if !self.searchbarHidden {
-                self.feeds.removeAll()
-            }
+//            if !self.searchbarHidden {
+//                self.feeds.removeAll()
+//            }
             
             if self.pageIndex == 1 {
+                print("removeAll")
                 self.feeds.removeAll()
                 for index in 0..<array.count {
                     let item = array[index]
@@ -427,9 +602,8 @@ class NewsViewController: SearchBaseViewController, UITableViewDataSource, UITab
                     }
                 }
                 
-                self.tableView.contentOffset = CGPointMake(0, 0)
+                print("tableView.reloadData()")
                 self.tableView.reloadData()
-
             } else {
                 if array.count == 0 {
                     return
@@ -494,6 +668,7 @@ class NewsViewController: SearchBaseViewController, UITableViewDataSource, UITab
     
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print("numberOfRowsInSection \(self.feeds.count)")
         return self.feeds.count
     }
     
@@ -532,9 +707,9 @@ class NewsViewController: SearchBaseViewController, UITableViewDataSource, UITab
         print("sharerDidCancel")
     }
 
-    override func viewDidAppear(animated: Bool) {
-        self.tableView.reloadData()
-    }
+//    override func viewDidAppear(animated: Bool) {
+//        self.tableView.reloadData()
+//    }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let feed:Feed = self.feeds[indexPath.row]

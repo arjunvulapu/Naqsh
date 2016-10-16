@@ -17,6 +17,7 @@ class ChannelDetailsViewController: BaseViewController, UITableViewDataSource, U
     @IBOutlet weak var imageViewFollowed: UIImageView!
     @IBOutlet weak var labelCount: UILabel!
     @IBOutlet weak var tableView: UITableView!
+    var requestInProgress = false
     
     var channel:Chanel?
     var pageIndex = 1
@@ -80,6 +81,11 @@ class ChannelDetailsViewController: BaseViewController, UITableViewDataSource, U
     }
     
     func reloadData(showIndicator:Bool = true) {
+        if self.requestInProgress == true {
+            return
+        }
+        
+        self.requestInProgress = true
         var params:[String:AnyObject] = [:]
         params["chanels"] = self.channel!.id
         params["page"] = pageIndex
@@ -118,6 +124,7 @@ class ChannelDetailsViewController: BaseViewController, UITableViewDataSource, U
             }
             
             self.refreshControl.endRefreshing()
+            self.requestInProgress = false
         }
     }
     

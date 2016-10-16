@@ -22,17 +22,17 @@ class SearchBaseViewController: BaseViewController {
 //        self.searchViewCover.alpha = 0.7
 //        self.view.addSubview(self.searchViewCover)
         
-        self.searchBar.frame = CGRectMake(0, -44, self.view.frame.size.width, 44)
+        self.searchBar.frame = CGRectMake(0, 0, self.view.frame.size.width, 44)
         self.searchBar.delegate = self
         self.view.addSubview(self.searchBar)
         self.view.bringSubviewToFront(self.searchBar)
     }
 
-    override func viewWillAppear(animated: Bool) {
-        self.searchbarHidden = true
-        self.searchBar.frame = CGRectMake(0, -44, self.view.frame.size.width, 44)
-        self.searchBar.resignFirstResponder()
-    }
+//    override func viewWillAppear(animated: Bool) {
+//        self.searchbarHidden = true
+//        self.searchBar.frame = CGRectMake(0, 44, self.view.frame.size.width, 44)
+//        self.searchBar.resignFirstResponder()
+//    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -41,7 +41,6 @@ class SearchBaseViewController: BaseViewController {
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
         self.searchbarHidden = true
         self.searchViewCover.frame = CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, self.view.frame.size.height)
-        self.searchBar.frame = CGRectMake(0, -44, self.view.frame.size.width, 44)
         self.searchBar.resignFirstResponder()
     }
     
@@ -61,6 +60,8 @@ class SearchBaseViewController: BaseViewController {
     }
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        search()
+        searchBar.resignFirstResponder()
         searchWithText(self.searchBar.text!)
 //        self.searchbarHidden = true
 //        self.searchViewCover.frame = CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, self.view.frame.size.height)

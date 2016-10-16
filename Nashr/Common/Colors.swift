@@ -9,4 +9,4 @@
 import Foundation
 import UIKit
 
-let theme_color:UIColor = UIColor(red:0.016,  green:0.655,  blue:0.925, alpha:1)
+let theme_color:UIColor = UIColor(red:0.004,  green:0.565,  blue:0.824, alpha:1)

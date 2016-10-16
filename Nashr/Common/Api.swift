@@ -22,12 +22,15 @@ enum Page: String {
     case tvLiveCategories = "tv-category.php"
     case tvLinkFull = "tv-full.php"
     case followChannel = "follow_cnt.php"
+    case tokenRegister = "token-register.php"
 }
 
 class Api {
     
     //static let BASE_URL = "http://3ajelapp.com/nashr/api/"
-    static let BASE_URL = "http://nashrapp.com/api/"
+    //static let BASE_URL = "http://nashrapp.com/api/"
+    //static let BASE_URL = "http://clients.yellowsoft.in/LetUKnow/api/"
+    static let BASE_URL = "http://clients.yellowsoft.in/nashr/api/"
     
     static func getUrl(page:Page) -> String {
         let str = String(format: "%@/%@", BASE_URL, page.rawValue)

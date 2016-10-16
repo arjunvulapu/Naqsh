@@ -959,7 +959,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
             
             
             NSMutableArray *images = [[NSMutableArray alloc] init];
-            for (int index = 1; index < 9; index++) {
+            for (int index = 1; index < 4; index++) {
                 [images addObject:[UIImage imageNamed:[NSString stringWithFormat:@"%d.png", index]]];
             }
 
@@ -1339,7 +1339,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 
 - (UIImageView*)imageView {
     if(!_imageView) {
-        _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 70.0f, 70.0f)];
+        _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 50.0f, 50.0f)];
         _imageView.layer.cornerRadius = 10;
         _imageView.clipsToBounds = YES;
     }

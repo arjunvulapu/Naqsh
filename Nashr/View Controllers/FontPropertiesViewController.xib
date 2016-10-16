@@ -10,7 +10,7 @@
                 <outlet property="fontStyle" destination="5Ny-aL-tZS" id="d6Z-fF-B38"/>
                 <outlet property="labelChangeFont" destination="60d-NR-IeQ" id="RPq-7H-xVJ"/>
                 <outlet property="labelChangeStyle" destination="tnH-26-JoY" id="3PI-EY-Ow3"/>
-                <outlet property="labelTitle" destination="yNh-Ob-Ekk" id="EcW-Ei-Lm2"/>
+                <outlet property="labelTitle" destination="fa2-Ba-uCW" id="B1X-V5-qB1"/>
                 <outlet property="sliderSize" destination="drC-6L-ysz" id="vEd-qK-3xN"/>
                 <outlet property="view" destination="9oh-iJ-spJ" id="03q-Tr-xqB"/>
             </connections>
@@ -75,9 +75,6 @@
                     <rect key="frame" x="146" y="8" width="38" height="38"/>
                     <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <state key="normal" image="close.png"/>
-                    <connections>
-                        <action selector="close:" destination="-1" eventType="touchUpInside" id="KoP-YY-Cfi"/>
-                    </connections>
                 </button>
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="j3W-Of-MPy">
                     <rect key="frame" x="4" y="48" width="175" height="1"/>
@@ -93,9 +90,6 @@
                             <integer key="value" value="5"/>
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
-                    <connections>
-                        <action selector="save:" destination="-1" eventType="touchUpInside" id="7s5-Mf-gJp"/>
-                    </connections>
                 </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>

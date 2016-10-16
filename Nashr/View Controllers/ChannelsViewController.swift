@@ -161,7 +161,7 @@ class ChannelsViewController: BaseViewController, UITableViewDataSource, UITable
                 cell.buttonADd.setTitle(Localization.get("follow"), forState: .Normal)
                 cell.buttonADd.setTitleColor(theme_color, forState: .Normal)
                 cell.buttonADd.backgroundColor = UIColor.clearColor()
-                self.makeCall(Page.followChannel, params: ["chanel_id":channel.id, "type":"add"], completionHandler: { (response) in
+                self.makeCall(Page.followChannel, params: ["chanel_id":channel.id, "type":"add"], showIndicator:false, completionHandler: { (response) in
                     
                 })
             } else {
@@ -172,7 +172,7 @@ class ChannelsViewController: BaseViewController, UITableViewDataSource, UITable
 //                cell.buttonADd.setTitle(Localization.get("unfollow"), forState: .Normal)
                 cell.buttonADd.setTitleColor(UIColor.whiteColor(), forState: .Normal)
                 cell.buttonADd.backgroundColor = theme_color
-                self.makeCall(Page.followChannel, params: ["chanel_id":channel.id, "type":"remove"], completionHandler: { (response) in
+                self.makeCall(Page.followChannel, params: ["chanel_id":channel.id, "type":"remove"], showIndicator:false, completionHandler: { (response) in
                     
                 })
             }

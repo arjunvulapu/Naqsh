@@ -11,6 +11,7 @@ import XCDYouTubeKit
 
 class TVLiveViewController: BaseViewController, UICollectionViewDelegate, UICollectionViewDataSource {
 
+    @IBOutlet weak var buttonContainer: UIView!
     var categoryId:String?
     var cateogries:[TVLiveLinkCategory] = []
     var links:[Tv] = []
@@ -25,6 +26,13 @@ class TVLiveViewController: BaseViewController, UICollectionViewDelegate, UIColl
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.buttonContainer.layer.cornerRadius = 5
+        self.buttonContainer.clipsToBounds = true
+        self.buttonContainer.layer.borderColor = theme_color.CGColor
+        self.buttonContainer.layer.borderWidth = 1
+        
+        
         self.navigationItem.title = Localization.get("title_tv_live")
         self.collectionView.registerNib(UINib(nibName: "TVLinkCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "cell")
         
@@ -120,6 +128,7 @@ class TVLiveViewController: BaseViewController, UICollectionViewDelegate, UIColl
         let button = sender as! UIButton
         button.backgroundColor = theme_color
         button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        //self.navigationItem.title = button.titleLabel?.text
         
         switch button {
         case self.button1:

@@ -14,11 +14,18 @@ class PagerTableViewCell: UITableViewCell, KIImagePagerDelegate, KIImagePagerDat
     @IBOutlet weak var videoIcon: UIImageView!
     @IBOutlet weak var pager: KIImagePager!
     var imageSelected:(() -> Void)?
+    var startVideo:(() -> Void)?
     
+    @IBOutlet weak var buttonPlay: UIButton!
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.buttonPlay.hidden = true
     }
 
+    @IBAction func playVideo(sender: AnyObject) {
+        self.startVideo?()
+    }
+    
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }

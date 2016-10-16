@@ -15,8 +15,8 @@ class AppSettingsViewController: BaseViewController, UITableViewDataSource, UITa
     
     @IBOutlet weak var talbeView: UITableView!
     
-    // Localization.get("urgent_news_notification")
-    let section1:[String] = [Localization.get("change_language"), Localization.get("sound_notifications"), Localization.get("size_font_address")]
+    
+    let section1:[String] = [Localization.get("change_language"), Localization.get("urgent_news_notification"), Localization.get("sound_notifications"), Localization.get("size_font_address")]
     
     let section2:[String] = [Localization.get("contact_us"), Localization.get("facebook_nashrapp"), Localization.get("twitter_nashrapp"), Localization.get("instagram_nashrapp"), Localization.get("rate_nashrapp"), Localization.get("suggest_add_source"), Localization.get("report_bug")]
     let section2Icons:[String] = ["settings_contact_us.png", "settings_facebook.png", "settings_twitter.png", "settings_instagram.png", "settings_rate.png", "settings_suggest.png", "settings_warning.png"]
@@ -32,6 +32,7 @@ class AppSettingsViewController: BaseViewController, UITableViewDataSource, UITa
         
         //self.navigationItem.rightBarButtonItem = UIBarButtonItem()
         self.talbeView.registerNib(UINib(nibName: "SettingsTableViewCell", bundle: nil), forCellReuseIdentifier: "cell")
+        self.talbeView.registerNib(UINib(nibName: "PushStatusTableViewCell", bundle: nil), forCellReuseIdentifier: "cell_push")
         self.talbeView.registerClass(UITableViewCell.classForCoder(), forCellReuseIdentifier: "cell2")
         makeCall(Page.settings, params: [:]) { (response) in
             self.dictionary = response as! NSDictionary
@@ -101,11 +102,11 @@ class AppSettingsViewController: BaseViewController, UITableViewDataSource, UITa
 //                    Localization.changeLanguage(Localization.Language.French)
 //                }))
 //                self.presentViewController(alert, animated: true, completion: nil)
-            } else if indexPath.row == 2 {
+            } else if indexPath.row == 3 {
                 let vc:FontPropertiesViewController = FontPropertiesViewController(nibName: "FontPropertiesViewController", bundle: nil)
                 vc.delegate = self
                 self.presentPopupViewController(vc, animationType: MJPopupViewAnimationSlideBottomTop)
-            } else if indexPath.row == 1 {
+            } else if indexPath.row == 2 {
                 UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
             }
         } else if indexPath.section == 1 {
@@ -219,16 +220,21 @@ class AppSettingsViewController: BaseViewController, UITableViewDataSource, UITa
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            let cell:UITableViewCell = talbeView.dequeueReusableCellWithIdentifier("cell2")!
-//            cell.semanticContentAttribute = .ForceRightToLeft
-//            cell.textLabel?.semanticContentAttribute = .ForceRightToLeft
-            cell.textLabel?.text = section1[indexPath.row]
-//            if indexPath.row == 1 {
-//                cell.accessoryView = UISwitch(frame: CGRectMake(0, 0, 40, 40))
-//            }
-            cell.textLabel?.textAlignment = .Right
-            
-            return cell
+            if indexPath.row == 1 {
+                let cell:UITableViewCell = talbeView.dequeueReusableCellWithIdentifier("cell_push")!
+                return cell
+            } else {
+                let cell:UITableViewCell = talbeView.dequeueReusableCellWithIdentifier("cell2")!
+    //            cell.semanticContentAttribute = .ForceRightToLeft
+    //            cell.textLabel?.semanticContentAttribute = .ForceRightToLeft
+                cell.textLabel?.text = section1[indexPath.row]
+    //            if indexPath.row == 1 {
+    //                cell.accessoryView = UISwitch(frame: CGRectMake(0, 0, 40, 40))
+    //            }
+                cell.textLabel?.textAlignment = .Right
+                
+                return cell
+            }
         } else {
             let cell:SettingsTableViewCell = talbeView.dequeueReusableCellWithIdentifier("cell") as! SettingsTableViewCell
 //            cell.semanticContentAttribute = .ForceRightToLeft
