@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '317652FB12662FE48FF297F6'
+               BlueprintIdentifier = 'A2DA7EF023916153CD5EDFDF'
                BlueprintName = 'KIImagePager'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'KIImagePager.framework'>

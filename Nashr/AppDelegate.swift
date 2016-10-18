@@ -13,6 +13,7 @@ import SVProgressHUD
 import Alamofire
 import MediaPlayer
 import FBSDKCoreKit
+import RealmSwift
 
 class MyTabBar : UITabBar {
     override func sizeThatFits(size: CGSize) -> CGSize {
@@ -139,6 +140,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         if let presentedViewController = self.window!.rootViewController?.presentedViewController {
             if (presentedViewController.isKindOfClass(MPMoviePlayerViewController.self) && !presentedViewController.isBeingDismissed()) {
                 return .AllButUpsideDown
+            } else if presentedViewController.isKindOfClass(UINavigationController.self) {
+                let nav:UINavigationController = presentedViewController as! UINavigationController
+                if nav.topViewController!.isKindOfClass(JWPlayerViewController.self) {
+                    return .AllButUpsideDown
+                }
             }
         }
         return .Portrait
@@ -161,13 +167,40 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         // save token
         Settings.deviceToken = tokenString
         
+        var channelIds:[String] = []
+        let items = try! Realm().objects(SavedCategory)
+        for cat in items {
+            for ch in cat.channels {
+                channelIds.append("\(ch.channelId)")
+            }
+        }
+    
+        let status:Bool = (Settings.urgentNewsNotification == nil) ? true : Settings.urgentNewsNotification!
         Alamofire
-            .request(.POST, Api.getUrl(Page.tokenRegister), parameters: ["device_token":tokenString, "status":"true"])
+            .request(.POST, Api.getUrl(Page.tokenRegister), parameters: ["device_token":tokenString, "status":(status == true) ? "true" : "false", "chanels":channelIds.joinWithSeparator(",")])
             .responseJSON(completionHandler: { (response) in
                 print ("registered")
             })
         
         print("Device Token:", tokenString)
+    }
+    
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+        print("**********  notificaton received 2 :")
+        let dictionary = userInfo["aps"] as! NSDictionary
+        if dictionary["type"] as! String == "news" {
+            let tabbar = self.window?.rootViewController as! UITabBarController
+            tabbar.selectedIndex = 0
+            let nav:UINavigationController = tabbar.viewControllers![0] as! UINavigationController
+            let vc:NewsDetailsViewController = Utils.getViewController("NewsDetailsViewController") as! NewsDetailsViewController
+            vc.feedId = dictionary["feed_id"] as? String
+            nav.pushViewController(vc, animated: true)
+        }
+    }
+    
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
+        
+        print("notificaton received:")
     }
     
     func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {

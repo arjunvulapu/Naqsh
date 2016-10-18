@@ -166,10 +166,18 @@ class TVLiveViewController: BaseViewController, UICollectionViewDelegate, UIColl
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let link = self.links[indexPath.row]
-        let vc:XCDYouTubeVideoPlayerViewController = XCDYouTubeVideoPlayerViewController(videoIdentifier: link.youtube)
-        self.presentViewController(vc, animated: true, completion: nil)
-//        let url = NSURL(string: link.link)
-//        UIApplication.sharedApplication().openURL(url!)
+        if link.youtube.characters.count == 0 {
+            let vc:JWPlayerViewController = Utils.getViewController("JWPlayerViewController") as! JWPlayerViewController
+            vc.file = link.link
+            vc.screenTitle = link.Title
+            //self.navigationController?.pushViewController(vc, animated: true)
+            self.presentViewController(UINavigationController(rootViewController: vc), animated: true, completion: nil)
+        } else {
+            let vc:XCDYouTubeVideoPlayerViewController = XCDYouTubeVideoPlayerViewController(videoIdentifier: link.youtube)
+            self.presentViewController(vc, animated: true, completion: nil)
+    //        let url = NSURL(string: link.link)
+    //        UIApplication.sharedApplication().openURL(url!)
+        }
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {

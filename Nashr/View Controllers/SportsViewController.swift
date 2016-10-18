@@ -115,9 +115,15 @@ class SportsViewController: BaseViewController, DZNEmptyDataSetSource, DZNEmptyD
             NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(sourceSelected), name: "AddSportsNewsSource", object: nil)
         }
         
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(titleFontChanged), name: "TitleFontChanged", object: nil)
+        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(sourceSelected), name: "NoSportsNewsSource", object: nil)
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(reloadData), name: UIApplicationDidBecomeActiveNotification, object: nil)
 
+    }
+    
+    func titleFontChanged() {
+        self.tableView.reloadData()
     }
     
     func getChannelCount() -> Int {

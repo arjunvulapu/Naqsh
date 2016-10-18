@@ -155,6 +155,8 @@ class SettingsViewController: BaseViewController, UITableViewDataSource, UITable
             
             let alert:UIAlertController = UIAlertController(title: nil, message: Localization.get("message_channel_unfollow"), preferredStyle: .Alert)
             alert.addAction(UIAlertAction(title: Localization.get("yes"), style: .Default, handler: { (alert) in
+                
+                var channels:[String] = []
                 let realm = try! Realm()
                 try! realm.write {
                     let items = try! Realm().objects(SavedCategory)
@@ -171,6 +173,21 @@ class SettingsViewController: BaseViewController, UITableViewDataSource, UITable
                             realm.delete(cat)
                         }
                     }
+                }
+                
+                var channelIds:[String] = []
+                let items = try! Realm().objects(SavedCategory)
+                for cat in items {
+                    for ch in cat.channels {
+                        channelIds.append("\(ch.channelId)")
+                    }
+                }
+                
+                if (Settings.deviceToken != nil) && (channelIds.count > 0) {
+                    let status:Bool = (Settings.urgentNewsNotification == nil) ? true : Settings.urgentNewsNotification!
+                    self.makeCall(Page.tokenRegister, params: ["device_token":Settings.deviceToken!,"chanels":channelIds.joinWithSeparator(","), "status":(status == true) ? "true" : "false"], completionHandler: { (response) in
+                        
+                    })
                 }
                 
                 self.channels.removeAtIndex(indexPath.row)

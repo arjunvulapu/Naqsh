@@ -21,6 +21,7 @@ class NewsDetailsViewController: BaseViewController, UIWebViewDelegate, UITableV
     var fontSize = 10
     var fontStyle = "normal"
     
+    var feedId:String?
     var feed:Feed?
     var documentController:UIDocumentInteractionController?
     
@@ -139,6 +140,16 @@ class NewsDetailsViewController: BaseViewController, UIWebViewDelegate, UITableV
 //        makeCall(Page.settings, params: [:]) { (response) in
 //            self.dictionary = response as? NSDictionary
 //        }
+        
+        if (self.feed == nil) && (self.feedId != nil) {
+            self.makeCall(Page.feeds, params: ["feed_id":self.feedId!], completionHandler: { (response) in
+                let array = response as! NSArray
+                if array.count > 0 {
+                    self.feed = Feed(fromDictionary: array[0] as! NSDictionary)
+                    self.tableView.reloadData()
+                }
+            })
+        }
     }
     
     func hideFontView() {
@@ -146,6 +157,7 @@ class NewsDetailsViewController: BaseViewController, UIWebViewDelegate, UITableV
             self.viewChangeFont.alpha = 0
         }
     }
+    
     
     override func viewWillAppear(animated: Bool) {
         self.tabBarController?.tabBar.hidden = true
@@ -226,7 +238,7 @@ class NewsDetailsViewController: BaseViewController, UIWebViewDelegate, UITableV
     }
 
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 4
+        return self.feed == nil ? 0 : 4
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

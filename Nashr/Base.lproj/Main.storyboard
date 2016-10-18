@@ -44,10 +44,10 @@
                                 </connections>
                             </tableView>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J9v-yS-nbD">
-                                <rect key="frame" x="243.5" y="45" width="113" height="30"/>
+                                <rect key="frame" x="240" y="45" width="120" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="m3K-aa-9C4"/>
-                                    <constraint firstAttribute="width" constant="113" id="rf5-4p-iP4"/>
+                                    <constraint firstAttribute="width" constant="120" id="rf5-4p-iP4"/>
                                 </constraints>
                                 <state key="normal" title="New Feeds"/>
                                 <connections>
@@ -61,19 +61,19 @@
                                         <rect key="frame" x="0.0" y="0.0" width="582" height="29"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DVG-3j-Mpu">
-                                                <rect key="frame" x="0.0" y="0.0" width="146" height="29"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="145.5" height="29"/>
                                                 <state key="normal" title="Button"/>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NOe-cn-Sc5">
-                                                <rect key="frame" x="146" y="0.0" width="146" height="29"/>
+                                                <rect key="frame" x="145.5" y="0.0" width="145.5" height="29"/>
                                                 <state key="normal" title="Button"/>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JLV-HD-nNF">
-                                                <rect key="frame" x="291" y="0.0" width="146" height="29"/>
+                                                <rect key="frame" x="291" y="0.0" width="145.5" height="29"/>
                                                 <state key="normal" title="Button"/>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ns3-V5-tlF">
-                                                <rect key="frame" x="437" y="0.0" width="146" height="29"/>
+                                                <rect key="frame" x="436.5" y="0.0" width="145.5" height="29"/>
                                                 <state key="normal" title="Button"/>
                                             </button>
                                         </subviews>
@@ -807,10 +807,10 @@
                                 </connections>
                             </tableView>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1dA-vU-jQK">
-                                <rect key="frame" x="243" y="49" width="113" height="30"/>
+                                <rect key="frame" x="239.5" y="49" width="120" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="AKQ-Oh-RAa"/>
-                                    <constraint firstAttribute="width" constant="113" id="FiO-zj-nI3"/>
+                                    <constraint firstAttribute="width" constant="120" id="FiO-zj-nI3"/>
                                 </constraints>
                                 <state key="normal" title="New Feeds"/>
                             </button>
@@ -873,6 +873,7 @@
                         <outlet property="button1" destination="etg-KK-bWG" id="ACU-k8-epn"/>
                         <outlet property="button2" destination="D0K-Vl-skl" id="GoT-tD-iKR"/>
                         <outlet property="buttonContainer" destination="BAP-LQ-Nn0" id="EgF-Ce-bRc"/>
+                        <outlet property="buttonScrollUp" destination="1dA-vU-jQK" id="Oma-fH-5OA"/>
                         <outlet property="tableView" destination="LbJ-7A-dIt" id="G9K-xz-b5B"/>
                     </connections>
                 </viewController>
@@ -942,6 +943,16 @@
                                     <outlet property="delegate" destination="HoO-AD-J2E" id="Jke-MZ-Avr"/>
                                 </connections>
                             </tableView>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S6o-5V-Kn7">
+                                <rect key="frame" x="240" y="39" width="120" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="5CB-zP-KgS"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="120" id="axp-yo-kFE"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="hX0-d5-hzY"/>
+                                    <constraint firstAttribute="width" constant="120" id="k4J-qf-buD"/>
+                                </constraints>
+                                <state key="normal" title="New Feeds"/>
+                            </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="11j-pY-mme">
                                 <rect key="frame" x="9" y="5" width="582" height="29"/>
                                 <subviews>
@@ -974,9 +985,11 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="S6o-5V-Kn7" firstAttribute="top" secondItem="11j-pY-mme" secondAttribute="bottom" constant="5" id="1dX-Y7-WKX"/>
                             <constraint firstItem="11j-pY-mme" firstAttribute="leading" secondItem="VPg-yw-MyF" secondAttribute="leadingMargin" constant="-11" id="E7r-gB-GJS"/>
                             <constraint firstItem="AQN-EB-fPt" firstAttribute="top" secondItem="11j-pY-mme" secondAttribute="bottom" constant="6" id="GIw-5Z-Ypv"/>
                             <constraint firstAttribute="trailingMargin" secondItem="11j-pY-mme" secondAttribute="trailing" constant="-11" id="QoM-qb-o4U"/>
+                            <constraint firstItem="S6o-5V-Kn7" firstAttribute="centerX" secondItem="VPg-yw-MyF" secondAttribute="centerX" id="ZSV-wn-lBQ"/>
                             <constraint firstItem="qso-i1-rEK" firstAttribute="top" secondItem="AQN-EB-fPt" secondAttribute="bottom" id="cwb-HO-8gG"/>
                             <constraint firstItem="11j-pY-mme" firstAttribute="top" secondItem="tFY-UX-OeS" secondAttribute="bottom" constant="5" id="kWi-3n-D72"/>
                             <constraint firstItem="AQN-EB-fPt" firstAttribute="leading" secondItem="VPg-yw-MyF" secondAttribute="leadingMargin" constant="-20" id="lkc-EX-zpG"/>
@@ -1333,6 +1346,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="P2i-XM-fFA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1878" y="2360"/>
+        </scene>
+        <!--Player View Controller-->
+        <scene sceneID="kbs-dR-v1h">
+            <objects>
+                <viewController storyboardIdentifier="JWPlayerViewController" id="fK4-3D-g8h" customClass="JWPlayerViewController" customModule="Nashr" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="LXI-bh-IqD"/>
+                        <viewControllerLayoutGuide type="bottom" id="4m5-gG-ze7"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8Qu-Ly-0Df">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="K6z-dB-Ehp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2625" y="2360"/>
         </scene>
         <!--Contactus View Controller-->
         <scene sceneID="Sra-1d-45j">

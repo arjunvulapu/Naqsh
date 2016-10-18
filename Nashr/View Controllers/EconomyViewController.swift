@@ -11,7 +11,7 @@ import RealmSwift
 import DZNEmptyDataSet
 
 class EconomyViewController: BaseViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
-
+    @IBOutlet weak var buttonScrollUp: UIButton!
     @IBOutlet weak var buttonContainer: UIView!
     @IBOutlet weak var tableView: UITableView!
     var feedType:FeedType = .Latest
@@ -78,6 +78,14 @@ class EconomyViewController: BaseViewController, DZNEmptyDataSetSource, DZNEmpty
         self.buttonContainer.layer.borderColor = theme_color.CGColor
         self.buttonContainer.layer.borderWidth = 1
         
+        self.buttonScrollUp.backgroundColor = UIColor(red:0.941,  green:0.945,  blue:0.949, alpha:1)
+        self.buttonScrollUp.tintColor = UIColor.darkGrayColor()
+        self.buttonScrollUp.layer.cornerRadius = 5
+        self.buttonScrollUp.layer.borderColor = UIColor.darkGrayColor().CGColor
+        self.buttonScrollUp.layer.borderWidth = 1
+        self.buttonScrollUp.clipsToBounds = false
+        self.buttonScrollUp.hidden = true
+        
         pagingSpinner.color = UIColor(red: 22.0/255.0, green: 106.0/255.0, blue: 176.0/255.0, alpha: 1.0)
         pagingSpinner.hidesWhenStopped = true
         pagingSpinner.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 44);
@@ -124,9 +132,15 @@ class EconomyViewController: BaseViewController, DZNEmptyDataSetSource, DZNEmpty
             NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(sourceSelected), name: "AddedEconomyNewsSource", object: nil)
         }
         
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(titleFontChanged), name: "TitleFontChanged", object: nil)
+        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(sourceSelected), name: "NoEconomyNewsSource", object: nil)
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(reloadData), name: UIApplicationDidBecomeActiveNotification, object: nil)
 
+    }
+    
+    func titleFontChanged() {
+        self.tableView.reloadData()
     }
     
     func resetButtons() {

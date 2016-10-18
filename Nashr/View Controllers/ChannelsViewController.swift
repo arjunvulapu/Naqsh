@@ -178,6 +178,7 @@ class ChannelsViewController: BaseViewController, UITableViewDataSource, UITable
             }
             
             self.saveStatus()
+            self.updateChannelsList()
         }
         
         cell.selectionStyle = .None
@@ -185,6 +186,23 @@ class ChannelsViewController: BaseViewController, UITableViewDataSource, UITable
         return cell
     }
     
+    
+    func updateChannelsList() {
+        var channelIds:[String] = []
+        let items = try! Realm().objects(SavedCategory)
+        for cat in items {
+            for ch in cat.channels {
+                channelIds.append("\(ch.channelId)")
+            }
+        }
+        
+        if (Settings.deviceToken != nil) && (channelIds.count > 0) {
+            let status:Bool = (Settings.urgentNewsNotification == nil) ? true : Settings.urgentNewsNotification!
+            self.makeCall(Page.tokenRegister, params: ["device_token":Settings.deviceToken!,"chanels":channelIds.joinWithSeparator(","), "status":(status == true) ? "true" : "false"], completionHandler: { (response) in
+                
+            })
+        }
+    }
     
     /*
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {

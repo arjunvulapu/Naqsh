@@ -81,6 +81,8 @@ class FontPropertiesViewController: BaseViewController, UITableViewDelegate, UIT
         
         //Settings.currentFont = (values[indexPath.row], Settings.currentFont.style)
         Settings.titleFont = values[indexPath.row]
+        
+        NSNotificationCenter.defaultCenter().postNotificationName("TitleFontChanged", object: nil)
         self.delegate?.closePopup(self)
     }
 }

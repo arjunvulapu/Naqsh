@@ -11,5 +11,6 @@
 
 #import "MJPopupBackgroundView.h"
 #import "UIViewController+MJPopupViewController.h"
+#import <JWPlayerController.h>
 
 #endif /* Nashr_Bridging_Header_h */

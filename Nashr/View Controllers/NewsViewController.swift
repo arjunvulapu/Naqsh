@@ -109,9 +109,14 @@ class NewsViewController: BaseViewController, UITableViewDataSource, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.buttonScrollUp.backgroundColor = theme_color
-        self.buttonScrollUp.tintColor = UIColor.whiteColor()
+        self.buttonScrollUp.backgroundColor = UIColor(red:0.941,  green:0.945,  blue:0.949, alpha:1)
+        self.buttonScrollUp.tintColor = UIColor.darkGrayColor()
+        self.buttonScrollUp.layer.cornerRadius = 5
+        self.buttonScrollUp.layer.borderColor = UIColor.darkGrayColor().CGColor
+        self.buttonScrollUp.layer.borderWidth = 1
+        self.buttonScrollUp.clipsToBounds = false
         self.buttonScrollUp.hidden = true
+        
         self.buttonScrollUp.setTitle(Localization.get("scroll_up_message"), forState: .Normal)
         
         self.buttonContainer.layer.cornerRadius = 5
@@ -177,6 +182,8 @@ class NewsViewController: BaseViewController, UITableViewDataSource, UITableView
             NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(sourceSelected), name: "AddedGeneralNewsSource", object: nil)
         }
         
+        //TitleFontChanged
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(titleFontChanged), name: "TitleFontChanged", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(sourceSelected), name: "NoNewsSource", object: nil)
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(reloadData), name: UIApplicationDidBecomeActiveNotification, object: nil)
         
@@ -187,6 +194,10 @@ class NewsViewController: BaseViewController, UITableViewDataSource, UITableView
         } else {
             self.selectType(self.button1)
         }
+    }
+    
+    func titleFontChanged() {
+        self.tableView.reloadData()
     }
     
     var newFeedsArray:[Feed]?
@@ -274,7 +285,7 @@ class NewsViewController: BaseViewController, UITableViewDataSource, UITableView
                 self.newFeedsArray!.append(feed)
             }
             
-            self.buttonScrollUp.setTitle("\(Localization.get("scroll_up_message")) (\(array.count))", forState: .Normal)
+            self.buttonScrollUp.setTitle(" \(array.count) \(Localization.get("scroll_up_message"))", forState: .Normal)
             self.buttonScrollUp.hidden = false
             
             NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: #selector(self.hideNewFeedsButton), userInfo: nil, repeats: false)

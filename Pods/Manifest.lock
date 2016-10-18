@@ -1,13 +1,14 @@
 PODS:
-  - Alamofire (3.5.0)
+  - Alamofire (3.5.1)
   - DACircularProgress (2.3.1)
   - DZNEmptyDataSet (1.8.1)
-  - IDMPhotoBrowser (1.8.4):
+  - IDMPhotoBrowser (1.9.1):
     - DACircularProgress
     - pop
     - SDWebImage
   - IQKeyboardManager (4.0.6)
   - JVFloatLabeledTextField (1.1.1)
+  - JWPlayer-SDK (2.5.4)
   - KIImagePager (2.1.1)
   - MapleBacon (2.0.8)
   - pop (1.0.9)
@@ -28,19 +29,21 @@ DEPENDENCIES:
   - IDMPhotoBrowser
   - IQKeyboardManager
   - JVFloatLabeledTextField
+  - JWPlayer-SDK (~> 2.0)
   - KIImagePager
-  - MapleBacon
-  - RealmSwift
+  - MapleBacon (~> 2.0)
+  - RealmSwift (~> 1.1)
   - SVProgressHUD
   - XCDYouTubeKit
 
 SPEC CHECKSUMS:
-  Alamofire: b70a7352335f8ea5babd0a923eb7e8eacc67b877
+  Alamofire: 0dfba1184a543e2aa160f4e39cac4e8aba48d223
   DACircularProgress: 4dd437c0fc3da5161cb289e07ac449493d41db71
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
-  IDMPhotoBrowser: b574fe3229754e701f32df271afbc4ac7e4e1997
+  IDMPhotoBrowser: 35e8ba559a88f2a8be4ae04d7fd424665344ba06
   IQKeyboardManager: c52debb1967799ae7addb98eab0cf328083a874f
   JVFloatLabeledTextField: 0e5524b097f102036214dd8279edc8ecf08b5e18
+  JWPlayer-SDK: aeb7acd5f35f46b020c429e59a7ec38dc3b6fe0c
   KIImagePager: 3294254e5e3f76c62edc8bd89da4d0b5ed010b19
   MapleBacon: 32e3590e1730485b93f450283ff242f9444efc12
   pop: f667631a5108a2e60d9e8797c9b32ddaf2080bce

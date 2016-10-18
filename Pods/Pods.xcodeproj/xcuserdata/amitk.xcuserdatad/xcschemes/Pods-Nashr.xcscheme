@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '21B141BCC966A63A13B8DDDD'
+               BlueprintIdentifier = 'B7DB5AF4CA313BFCBEA2CAC3'
                BlueprintName = 'Pods-Nashr'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'Pods_Nashr.framework'>

@@ -36,6 +36,7 @@
 		88703EA31DA003D600E423A5 /* unfollow_source.png in Resources */ = {isa = PBXBuildFile; fileRef = 88703E9D1DA003D600E423A5 /* unfollow_source.png */; };
 		88703EA41DA003D600E423A5 /* unfollow_source@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 88703E9E1DA003D600E423A5 /* unfollow_source@2x.png */; };
 		88703EA51DA003D600E423A5 /* unfollow_source@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 88703E9F1DA003D600E423A5 /* unfollow_source@3x.png */; };
+		8877EFFB1DB53B4A0013D675 /* JWPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8877EFFA1DB53B4A0013D675 /* JWPlayerViewController.swift */; };
 		8878EFDF1D81EC3100AC2A01 /* video.png in Resources */ = {isa = PBXBuildFile; fileRef = 8878EFDC1D81EC3100AC2A01 /* video.png */; };
 		8878EFE01D81EC3100AC2A01 /* video@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8878EFDD1D81EC3100AC2A01 /* video@2x.png */; };
 		8878EFE11D81EC3100AC2A01 /* video@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8878EFDE1D81EC3100AC2A01 /* video@3x.png */; };
@@ -344,6 +345,8 @@
 		88703E9D1DA003D600E423A5 /* unfollow_source.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unfollow_source.png; sourceTree = "<group>"; };
 		88703E9E1DA003D600E423A5 /* unfollow_source@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "unfollow_source@2x.png"; sourceTree = "<group>"; };
 		88703E9F1DA003D600E423A5 /* unfollow_source@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "unfollow_source@3x.png"; sourceTree = "<group>"; };
+		8877EFF81DB5319C0013D675 /* JWPlayer-iOS-SDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "JWPlayer-iOS-SDK.framework"; path = "Nashr/Third Party/JWPlayer-iOS-SDK.framework"; sourceTree = "<group>"; };
+		8877EFFA1DB53B4A0013D675 /* JWPlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JWPlayerViewController.swift; sourceTree = "<group>"; };
 		8878EFDC1D81EC3100AC2A01 /* video.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video.png; sourceTree = "<group>"; };
 		8878EFDD1D81EC3100AC2A01 /* video@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "video@2x.png"; sourceTree = "<group>"; };
 		8878EFDE1D81EC3100AC2A01 /* video@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "video@3x.png"; sourceTree = "<group>"; };
@@ -1139,6 +1142,7 @@
 				88B6BFB21D507BA200D6713A /* cells */,
 				88E6F7261D3DC6410088A560 /* TVLiveViewController.swift */,
 				88427D041D74B5B700442262 /* TVLiveCategoriesViewController.swift */,
+				8877EFFA1DB53B4A0013D675 /* JWPlayerViewController.swift */,
 			);
 			name = "TV Live";
 			sourceTree = "<group>";
@@ -1177,6 +1181,7 @@
 		ACA81802697E71D6345BC04C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8877EFF81DB5319C0013D675 /* JWPlayer-iOS-SDK.framework */,
 				88C47AE81D8FEC9300FE6690 /* FBSDKCoreKit.framework */,
 				88C47AE91D8FEC9300FE6690 /* FBSDKLoginKit.framework */,
 				88C47AEA1D8FEC9300FE6690 /* FBSDKShareKit.framework */,
@@ -1224,6 +1229,7 @@
 					88C432201D3DBC0100C419D9 = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = AE929HMMBT;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Push = {
 								enabled = 1;
@@ -1561,6 +1567,7 @@
 				88BA44661D4EDB1100D2F75B /* Definitions.swift in Sources */,
 				88BA44421D4E24BD00D2F75B /* Chanel.swift in Sources */,
 				888E7E761D66145600BA6E67 /* SettingsTableViewCell.swift in Sources */,
+				8877EFFB1DB53B4A0013D675 /* JWPlayerViewController.swift in Sources */,
 				88C4326A1D3DBD6D00C419D9 /* Utils.swift in Sources */,
 				88C432691D3DBD6D00C419D9 /* UrlSession.swift in Sources */,
 				88BA44461D4E262A00D2F75B /* ChannelsViewController.swift in Sources */,
@@ -1724,16 +1731,58 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Nashr/Nashr.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: MAHER A ALKHAWENDI (AE929HMMBT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = "~/Documents/FacebookSDK";
+				FRAMEWORK_SEARCH_PATHS = (
+					"~/Documents/FacebookSDK",
+					"$(PROJECT_DIR)/Nashr/Third",
+					Party,
+					"$(PROJECT_DIR)/Framework",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Nashr/Third\\ Party",
+				);
 				INFOPLIST_FILE = Nashr/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-all_load",
+					"-framework",
+					"\"Alamofire\"",
+					"-framework",
+					"\"DACircularProgress\"",
+					"-framework",
+					"\"DZNEmptyDataSet\"",
+					"-framework",
+					"\"IDMPhotoBrowser\"",
+					"-framework",
+					"\"IQKeyboardManager\"",
+					"-framework",
+					"\"JVFloatLabeledTextField\"",
+					"-framework",
+					"\"KIImagePager\"",
+					"-framework",
+					"\"MapleBacon\"",
+					"-framework",
+					"\"Realm\"",
+					"-framework",
+					"\"RealmSwift\"",
+					"-framework",
+					"\"SDWebImage\"",
+					"-framework",
+					"\"SVProgressHUD\"",
+					"-framework",
+					"\"XCDYouTubeKit\"",
+					"-framework",
+					"\"pop\"",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.mamac.nashr;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Nashr-Bridging-Header.h";
 				SWIFT_VERSION = 2.3;
 			};
@@ -1745,16 +1794,58 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Nashr/Nashr.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: MAHER A ALKHAWENDI (AE929HMMBT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = "~/Documents/FacebookSDK";
+				FRAMEWORK_SEARCH_PATHS = (
+					"~/Documents/FacebookSDK",
+					"$(PROJECT_DIR)/Nashr/Third",
+					Party,
+					"$(PROJECT_DIR)/Framework",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Nashr/Third\\ Party",
+				);
 				INFOPLIST_FILE = Nashr/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-all_load",
+					"-framework",
+					"\"Alamofire\"",
+					"-framework",
+					"\"DACircularProgress\"",
+					"-framework",
+					"\"DZNEmptyDataSet\"",
+					"-framework",
+					"\"IDMPhotoBrowser\"",
+					"-framework",
+					"\"IQKeyboardManager\"",
+					"-framework",
+					"\"JVFloatLabeledTextField\"",
+					"-framework",
+					"\"KIImagePager\"",
+					"-framework",
+					"\"MapleBacon\"",
+					"-framework",
+					"\"Realm\"",
+					"-framework",
+					"\"RealmSwift\"",
+					"-framework",
+					"\"SDWebImage\"",
+					"-framework",
+					"\"SVProgressHUD\"",
+					"-framework",
+					"\"XCDYouTubeKit\"",
+					"-framework",
+					"\"pop\"",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.mamac.nashr;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Nashr-Bridging-Header.h";
 				SWIFT_VERSION = 2.3;
 			};

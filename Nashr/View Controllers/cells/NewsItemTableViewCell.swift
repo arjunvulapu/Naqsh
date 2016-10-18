@@ -156,7 +156,7 @@ class NewsItemTableViewCell: UITableViewCell {
             }
         }
         
-        if !feed.video.isEmpty {
+        if (feed.video != nil) && (!feed.video.isEmpty) {
             self.imageViewVideo?.hidden = false
         } else {
             self.imageViewVideo?.hidden = true

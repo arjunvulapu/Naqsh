@@ -7,10 +7,10 @@ target "Nashr" do
     
 pod 'IDMPhotoBrowser'
 pod 'Alamofire', '~> 3.4'
-pod 'RealmSwift'
+pod 'RealmSwift', '~> 1.1'
 pod 'DZNEmptyDataSet'
 pod 'SVProgressHUD'
-pod 'MapleBacon'
+pod 'MapleBacon', '~>2.0'
 pod 'KIImagePager'
 pod 'IQKeyboardManager'
 pod 'JVFloatLabeledTextField'
@@ -21,5 +21,6 @@ pod 'IDMPhotoBrowser'
 pod 'XCDYouTubeKit'
 #pod 'DMActivityInstagram', '0.0.3'
 pod 'KIImagePager'
+pod 'JWPlayer-SDK', '~> 2.0'
 
 end

@@ -52,6 +52,8 @@
 	<string>288295371206462</string>
 	<key>FacebookDisplayName</key>
 	<string>Test­A­p­p­l­i­c­a­tion</string>
+	<key>JWPlayerKey</key>
+	<string>jFaKvqYiTUyknggEJHbMDwHDFpkqUckqfKtmgw==</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbapi</string>
