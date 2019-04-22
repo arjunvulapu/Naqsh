@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="SettingsTableViewCell" customModule="Nashr" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JWA-dv-Ue4">
+                        <rect key="frame" x="30" y="8" width="244" height="27"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="27" id="fzo-Gu-jfF"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                        <color key="textColor" red="0.29803922770000002" green="0.29803922770000002" blue="0.29803922770000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="settings_facebook.png" translatesAutoresizingMaskIntoConstraints="NO" id="A11-Y8-oiP">
+                        <rect key="frame" x="282" y="8" width="28" height="27"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="27" id="PNN-cW-sI6"/>
+                            <constraint firstAttribute="width" constant="28" id="p18-OG-2U6"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EjF-tV-1Cn">
+                        <rect key="frame" x="8" y="11.5" width="26" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="26" id="YJI-4y-Jkt"/>
+                            <constraint firstAttribute="height" constant="21" id="trL-Uk-aR5"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="A11-Y8-oiP" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="IEc-GE-Q9p"/>
+                    <constraint firstAttribute="leadingMargin" secondItem="EjF-tV-1Cn" secondAttribute="leading" id="VrO-HY-MHA"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="A11-Y8-oiP" secondAttribute="trailing" constant="2" id="WAg-3n-zl3"/>
+                    <constraint firstItem="JWA-dv-Ue4" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="22" id="Wmp-Pe-EEL"/>
+                    <constraint firstItem="JWA-dv-Ue4" firstAttribute="leading" secondItem="EjF-tV-1Cn" secondAttribute="trailing" constant="-4" id="cKK-oP-sMd"/>
+                    <constraint firstItem="JWA-dv-Ue4" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="rjw-LK-r5e"/>
+                    <constraint firstItem="A11-Y8-oiP" firstAttribute="leading" secondItem="JWA-dv-Ue4" secondAttribute="trailing" constant="8" id="sAI-EH-qna"/>
+                    <constraint firstItem="EjF-tV-1Cn" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="v5D-ur-mmM"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="arrowLbl" destination="EjF-tV-1Cn" id="evB-KD-Ueg"/>
+                <outlet property="imageViewIcon" destination="A11-Y8-oiP" id="Ygp-4l-hr2"/>
+                <outlet property="labelTitle" destination="JWA-dv-Ue4" id="ysw-AH-8kv"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="settings_facebook.png" width="17" height="30"/>
+    </resources>
+</document>
